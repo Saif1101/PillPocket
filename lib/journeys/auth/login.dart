@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:prescription_ocr/common/screen_utils.dart';
+import 'package:prescription_ocr/common/theme_colors.dart';
+import 'package:prescription_ocr/journeys/home/home_page.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -17,102 +19,94 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 30.0, vertical: 2.0),
-              child: Center(
-                child: SizedBox(
-                    width: ScreenUtil.screenWidth,
-                    child: FittedBox(
-                      fit: BoxFit.fitWidth,
-                      child: Text(
-                        'PrescriptionOCR',
-                        style: GoogleFonts.manrope(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w500,
+      body: SingleChildScrollView(
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: ScreenUtil.screenHeight / 2,
+                width: ScreenUtil.screenWidth,
+                child: Container(
+                  padding: EdgeInsets.all(16),
+                  color: ThemeColors.primaryGreen,
+                  child: SvgPicture.asset(
+                    'assets/Logo_prescription_pill_pocket_rotated.svg',
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30.0, vertical: 2.0),
+                child: Center(
+                  child: SizedBox(
+                      width: ScreenUtil.screenWidth,
+                      child: FittedBox(
+                        fit: BoxFit.fitWidth,
+                        child: Text(
+                          'PillPocket',
+                          style: GoogleFonts.inter(
+                            color: ThemeColors.primaryGreen,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                    )),
+                      )),
+                ),
               ),
-            ),
-            SizedBox(
-                height: ScreenUtil.screenHeight / 4,
-                child: SvgPicture.asset('assets/Logo(0).svg')),
-            SizedBox(
-              height: ScreenUtil.screenHeight / 8,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal:32.0,vertical: 8.0),
-              child: Center(
-                child: Material(
-                  
-                  shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(32) ),
-                  elevation: 10,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(32),
-                      border: Border.all(color: Colors.blue)
-                    ),
-                    child: InkWell(
-                      onTap: (){
-                        Navigator.pushNamed(context, '/profile-page');
-                      },
+              SizedBox(
+                height: ScreenUtil.screenHeight / 8,
+              ),
+              GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, HomePage.routeName);
+                  },
+                  child: Card(
+                    elevation: 5,
+                    child: SizedBox(
+                      height: ScreenUtil.screenHeight / 16,
+                      width: ScreenUtil.screenWidth / 3,
                       child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 12.0, horizontal: 6.0),
-                            child: Text(
-                              'Login',
-                              style: Theme.of(context).textTheme.bodyText1,
+                          Flexible(
+                            flex: 1,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 4.0, horizontal: 4.0),
+                                child: SvgPicture.asset(
+                                    'assets/google_logo.svg'),
+                              ),
                             ),
                           ),
+                          Flexible(
+                            flex: 4,
+                            child: FittedBox(
+                              fit: BoxFit.fitWidth,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 8,
+                                    horizontal: 12.0),
+                                child: Text(
+                                  'Login',
+                                  style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.black),
+                                ),
+                              ),
+                            ),
+                          )
                         ],
                       ),
                     ),
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal:32.0,vertical: 8.0),
-              child: Center(
-                child: Material(
-                  elevation: 10,
-                  shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(32) ),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(32),
-                      border: Border.all(color: Colors.blue)
-                    ),
-                    child: InkWell(
-                      onTap: () => {print("Sign-up button")},
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 12.0, horizontal: 6.0),
-                            child: Text(
-                              'Sign Up',
-                              style: Theme.of(context).textTheme.bodyText1,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ]),
+                  )),
+            ]),
+      ),
     );
   }
 }

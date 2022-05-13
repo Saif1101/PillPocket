@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:prescription_ocr/common/screen_utils.dart';
 import 'package:prescription_ocr/common/theme_colors.dart';
 import 'package:prescription_ocr/config/app_router.dart';
+import 'package:prescription_ocr/journeys/auth/login.dart';
 import 'package:prescription_ocr/journeys/home/home_page.dart';
 
 Future<void> main() async {
@@ -47,7 +48,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       onGenerateRoute: AppRouter.onGenerateRoute,
-      initialRoute: HomePage.routeName,
+      initialRoute: LoginScreen.routeName,
     );
   }
 }
