@@ -1,16 +1,24 @@
-# prescription_ocr
+# PillPocket
 
-A new Flutter project.
+Pocket for your prescriptions, reminders for your medicines.
 
-## Getting Started
+## Home
+---
+All your recent prescripitions and your recent reminders at a glance. 
 
-This project is a starting point for a Flutter application.
+## Add Prescriptions
+--- 
+Click a photo or select an image of a prescritption from your storage.
 
-A few resources to get you started if this is your first Flutter project:
+## Configure Reminders
+---
+You can set up reminders for different medicines from your prescriptions. 
+* Set up reminder for multiple times a day for different days
+* Choose if the medicine has to be had Before/With/After meals
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+### Notifications 
+Receieve notifications of medicines at your specified times. 
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Your Medical History
+---
+You can check all your recent prescriptions and reminders at the press of a button. 
