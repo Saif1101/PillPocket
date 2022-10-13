@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "583669187430",
+    "project_id": "pillpocket-d147f",
+    "storage_bucket": "pillpocket-d147f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:583669187430:android:3e09b05afe6e40312a3ea7",
+        "android_client_info": {
+          "package_name": "com.sfn.pillpocket"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "583669187430-embm15krbaabid5gfjt9eua2biqlajte.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4_Ccrt0d6zrJ6jvNENFVj33q-P0lxDgo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "583669187430-embm15krbaabid5gfjt9eua2biqlajte.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

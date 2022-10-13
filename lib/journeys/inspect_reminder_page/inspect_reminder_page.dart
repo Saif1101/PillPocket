@@ -67,9 +67,10 @@ class _InspectReminderPageState extends State<InspectReminderPage> {
   }
 
   void setMealCombination(bool value, String label){
-    print("Meal combination : $label : $value");
-    mealCombination[label]=value; 
-    setState(() {});
+    print("Bool label value before: ${mealCombination[label]}");
+    print("print incoming value: $value ");
+    mealCombination[label]=!value; 
+    print("After assignment: $mealCombination ");
   }
 
   GlobalKey<TagsState> _tagStateKey = GlobalKey();
@@ -266,7 +267,7 @@ class _InspectReminderPageState extends State<InspectReminderPage> {
                   spacing: 5.0,
                   children: <Widget>[
                     DaySelectChip(onTap: selectDay, day: 'Monday', isSelected: selectedDays['Monday']!),
-                    DaySelectChip(onTap: selectDay, day: 'Tuesday', isSelected: selectedDays['Monday']!),
+                    DaySelectChip(onTap: selectDay, day: 'Tuesday', isSelected: selectedDays['Tuesday']!),
                     DaySelectChip(onTap: selectDay, day: 'Wednesday', isSelected: selectedDays['Wednesday']!),
                     DaySelectChip(onTap: selectDay, day: 'Thursday', isSelected: selectedDays['Thursday']!),
                     DaySelectChip(onTap: selectDay, day: 'Friday', isSelected: selectedDays['Friday']!),
@@ -283,9 +284,28 @@ class _InspectReminderPageState extends State<InspectReminderPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  MealCombinationButton(isSelected: mealCombination['Before']!, label: 'before', onTap: setMealCombination), //
-                  MealCombinationButton(isSelected: mealCombination['With']!, label: 'with', onTap: setMealCombination), //
-                  MealCombinationButton(isSelected: mealCombination['After']!, label: 'after', onTap: setMealCombination), //
+                  GestureDetector(
+                    onTap: (){
+                      setMealCombination( mealCombination['Before']!, 'Before');
+                      setState(() {                       
+                      });
+                    },
+                    child: MealCombinationButton(isSelected: mealCombination['Before']!, label: 'Before',)), //
+                  GestureDetector(
+                    onTap: (){
+                      setMealCombination( mealCombination['With']!, 'With');
+                      setState(() {                       
+                      });
+
+                    },
+                    child: MealCombinationButton(isSelected: mealCombination['With']!, label: 'With',)), //
+                  GestureDetector(
+                    onTap: (){
+                      setMealCombination( mealCombination['After']!, 'After');
+                      setState(() {                       
+                      });
+                    },
+                    child: MealCombinationButton(isSelected: mealCombination['After']!, label: 'After',)), //
                 ],
               ),
               SizedBox(

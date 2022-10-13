@@ -26,7 +26,7 @@ class _AddPrescriptionPageState extends State<AddPrescriptionPage> {
     return Scaffold(
         body: Stack(
       children: [
-        Positioned(
+         Positioned(
           top: 0,
           left: 0,
           right: 0,
@@ -107,7 +107,7 @@ class SelectDocumentButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: ScreenUtil.screenWidth / 1.5,
+      width: ScreenUtil.screenWidth / 1.2,
       child: ElevatedButton(
           onPressed: () {
             print('Button Press');
@@ -128,7 +128,7 @@ class SelectDocumentButton extends StatelessWidget {
                 style: GoogleFonts.roboto(
                   fontWeight: FontWeight.w500,
                   color: Colors.black,
-                  fontSize: 16,
+                  fontSize: 14,
                 ),
               )
             ],
