@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:prescription_ocr/common/screen_utils.dart';
+import 'package:prescription_ocr/common/utils/screen_utils.dart';
 import 'package:prescription_ocr/common/theme_colors.dart';
 import 'package:prescription_ocr/journeys/add_prescription/add_prescription_page.dart';
 import 'package:prescription_ocr/journeys/edit_prescription/edit_prescription.dart';

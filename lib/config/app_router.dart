@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:prescription_ocr/journeys/add_prescription/add_prescription_page.dart';
 import 'package:prescription_ocr/journeys/add_prescription/prescription_review_page.dart';
 import 'package:prescription_ocr/journeys/add_prescription/reminders_review_page.dart';
-import 'package:prescription_ocr/journeys/auth/login.dart';
+import 'package:prescription_ocr/journeys/auth/login_page.dart';
 import 'package:prescription_ocr/journeys/configure_reminders/configure_reminder_page.dart';
 import 'package:prescription_ocr/journeys/edit_prescription/edit_prescription.dart';
 import 'package:prescription_ocr/journeys/history/history_page.dart';

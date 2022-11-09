@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_tags/flutter_tags.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:prescription_ocr/common/screen_utils.dart';
+import 'package:prescription_ocr/common/utils/screen_utils.dart';
 import 'package:prescription_ocr/common/theme_colors.dart';
 import 'package:prescription_ocr/journeys/inspect_reminder_page/medicines/medicines_widget.dart';
 import 'package:prescription_ocr/journeys/inspect_reminder_page/model/NotificationDayAndTime.dart';
@@ -61,6 +61,7 @@ class _InspectReminderPageState extends State<InspectReminderPage> {
         },
       );
     } else {
+      selectedDays['Everyday'] = false;
       selectedDays[day] = value;
     }
     setState(() {});
@@ -68,7 +69,7 @@ class _InspectReminderPageState extends State<InspectReminderPage> {
 
   void setMealCombination(bool value, String label){
     print("Bool label value before: ${mealCombination[label]}");
-    print("print incoming value: $value ");
+    print("print incoming value: ${!value} ");
     mealCombination[label]=!value; 
     print("After assignment: $mealCombination ");
   }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:prescription_ocr/common/screen_utils.dart';
+import 'package:prescription_ocr/common/utils/screen_utils.dart';
 import 'package:prescription_ocr/common/theme_colors.dart';
 import 'package:prescription_ocr/journeys/history/history_page.dart';
 import 'package:prescription_ocr/journeys/home/widgets/DashboardGreenButton.dart';
@@ -26,7 +26,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  
   @override
   void initState() {
     super.initState();
@@ -37,7 +36,8 @@ class _HomePageState extends State<HomePage> {
             context: context,
             builder: (context) => AlertDialog(
               title: Text('Allow Notifications'),
-              content: Text('We need permission to show notifications to serve reminders for medicines'),
+              content: Text(
+                  'We need permission to show notifications to serve reminders for medicines'),
               actions: [
                 TextButton(
                   onPressed: () => AwesomeNotifications()
@@ -82,7 +82,7 @@ class _HomePageState extends State<HomePage> {
           IconButton(
               icon: Icon(Icons.account_circle, size: 38, color: Colors.black),
               onPressed: () {
-                Navigator.pushNamed(context,ProfilePage.routeName);
+                Navigator.pushNamed(context, ProfilePage.routeName);
               } //do something,
               ),
         ],
@@ -142,9 +142,12 @@ class _HomePageState extends State<HomePage> {
                   itemCount: 5,
                   itemBuilder: (BuildContext context, int index) {
                     return ReminderCardInformation();
-                  }, separatorBuilder: (BuildContext context, int index) { 
-                    return SizedBox(width: 10,);
-                   },
+                  },
+                  separatorBuilder: (BuildContext context, int index) {
+                    return SizedBox(
+                      width: 10,
+                    );
+                  },
                 ),
               ),
             ),
@@ -171,9 +174,13 @@ class _HomePageState extends State<HomePage> {
                 child: Column(
                   children: [
                     PrescriptionCardCondensed(),
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
                     PrescriptionCardCondensed(),
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
                     PrescriptionCardCondensed(),
                   ],
                 ))
@@ -250,8 +257,6 @@ class ReminderCardCondensed2 extends StatelessWidget {
     );
   }
 }
-
-
 
 class PrescriptionCard extends StatelessWidget {
   const PrescriptionCard({
@@ -357,8 +362,6 @@ class DashboardRow extends StatelessWidget {
     );
   }
 }
-
-
 
 class DashboardRow2 extends StatelessWidget {
   const DashboardRow2({

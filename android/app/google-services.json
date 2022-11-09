@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "583669187430-23ip7mhtk0ntm0onoeklm22fe0rk3gfj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sfn.pillpocket",
+            "certificate_hash": "11b74e16c139eba624b59c70b370721f749ed279"
+          }
+        },
+        {
           "client_id": "583669187430-embm15krbaabid5gfjt9eua2biqlajte.apps.googleusercontent.com",
           "client_type": 3
         }

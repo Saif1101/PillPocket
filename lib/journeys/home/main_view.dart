@@ -31,11 +31,14 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          title: Text('Main', style: TextStyle(color: Colors.black),),
+        ),
         bottomNavigationBar: CustomBottomNavBar(
           pageController: pageController,
         ),
         body: PageView( // TODO:- If user is logged in :- display PageView or if not logged in -> show login. 
-          children: const [ProfilePage(),HomePage(), AddPrescriptionPage()], //Insert a page between profile and cart to make it the explore screen
+          children: const [HomePage(),HomePage(), AddPrescriptionPage()], //Insert a page between profile and cart to make it the explore screen
           physics: const NeverScrollableScrollPhysics(),
           controller: pageController,
           onPageChanged: onPageChanged,
