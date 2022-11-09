@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:prescription_ocr/common/theme_colors.dart';
+import 'package:prescription_ocr/journeys/common_widgets/ReminderCardCondensed.dart';
 import 'package:prescription_ocr/journeys/history/history_page.dart';
 import 'package:prescription_ocr/journeys/home/home_page.dart';
 import 'package:prescription_ocr/journeys/inspect_reminder_page/inspect_reminder_page.dart';
@@ -60,29 +61,33 @@ class ReminderReviewPage extends StatelessWidget {
                 SizedBox(
                   height: 3,
                 ),
-                Text('Configure reminders for this prescription.',
-                style: GoogleFonts.roboto(
+                Text(
+                  'Configure reminders for this prescription.',
+                  style: GoogleFonts.roboto(
                     fontWeight: FontWeight.w800,
                     color: Colors.white,
                     fontSize: 14,
-                  ),),
+                  ),
+                ),
               ],
             ),
           ),
           Column(
             children: [
-              SizedBox(height: 85,),
+              SizedBox(
+                height: 85,
+              ),
               Expanded(
                 child: ListView.separated(
-                  
                   shrinkWrap: true,
-                  itemCount:  5,
-                  itemBuilder: (BuildContext context, int index) {  
+                  itemCount: 5,
+                  itemBuilder: (BuildContext context, int index) {
                     return ReminderCardCondensed();
-                  }, separatorBuilder: (BuildContext context, int index) { 
-                    return SizedBox(height:10);
-                   },
-                  ),
+                  },
+                  separatorBuilder: (BuildContext context, int index) {
+                    return SizedBox(height: 10);
+                  },
+                ),
               ),
             ],
           )

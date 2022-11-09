@@ -1,11 +1,12 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:prescription_ocr/blocs/auhtentication/auth_bloc.dart';
+import 'package:get_storage/get_storage.dart';
+
+import 'package:prescription_ocr/blocs/authentication/auth_bloc.dart';
 import 'package:prescription_ocr/blocs/observer/bloc_observer.dart';
 import 'package:prescription_ocr/common/utils/screen_utils.dart';
 import 'package:prescription_ocr/common/theme_colors.dart';
@@ -18,6 +19,7 @@ Future<void> main() async {
   ScreenUtil.init();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await GetStorage.init();
 
   AwesomeNotifications().initialize(
     'resource://drawable/res_notification_app_icon',
@@ -76,11 +78,9 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             appBarTheme: AppBarTheme(color: Colors.white),
             colorScheme: ColorScheme.fromSwatch().copyWith(
-              
-      primary: ThemeColors.primaryGreen,
-      secondary: ThemeColors.primaryGrey,
-
-    ),
+              primary: ThemeColors.primaryGreen,
+              secondary: ThemeColors.primaryGrey,
+            ),
           ),
           onGenerateRoute: AppRouter.onGenerateRoute,
           initialRoute:

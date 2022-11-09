@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:prescription_ocr/blocs/auhtentication/auth_bloc.dart';
+import 'package:prescription_ocr/blocs/authentication/auth_bloc.dart';
 import 'package:prescription_ocr/common/utils/screen_utils.dart';
 import 'package:prescription_ocr/common/theme_colors.dart';
 import 'package:prescription_ocr/journeys/auth/registration_page.dart';

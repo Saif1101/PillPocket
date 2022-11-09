@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
 import 'package:google_fonts/google_fonts.dart';
-import 'package:prescription_ocr/blocs/auhtentication/auth_bloc.dart';
-import 'package:prescription_ocr/common/utils/screen_utils.dart';
-import 'package:prescription_ocr/common/theme_colors.dart';
+import 'package:prescription_ocr/blocs/authentication/auth_bloc.dart';
+
 import 'package:prescription_ocr/data/models/user/registration_detail.dart';
-import 'package:prescription_ocr/journeys/history/history_page.dart';
+import 'package:prescription_ocr/journeys/common_widgets/GreenWhitePageHeader.dart';
+
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({Key? key}) : super(key: key);
@@ -102,7 +102,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     height: 10,
                   ),
                   TextFormField(
-                    
                     keyboardType: TextInputType.phone,
                     autovalidateMode: AutovalidateMode.always,
                     decoration: const InputDecoration(
@@ -127,8 +126,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     height: 10,
                   ),
                   TextFormField(
-                    
-                    
                     keyboardType: TextInputType.number,
                     autovalidateMode: AutovalidateMode.always,
                     decoration: const InputDecoration(
@@ -142,7 +139,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         Icons.calendar_today,
                       ),
                     ),
-                    
                     onSaved: (String? value) {
                       _registrationDetail.age = value;
                     },
