@@ -13,7 +13,8 @@ class ReminderCardCondensed extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Expanded(
-          child: ReminderCardInformation(),
+          // ReminderCardInformation()
+          child: SizedBox(),
         ),
         EditDeleteButtonBar(),
       ],

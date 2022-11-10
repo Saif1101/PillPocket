@@ -11,6 +11,7 @@ class AddPrescriptionPage extends StatefulWidget {
   static const String routeName = '/add-prescription';
 
   static Route route() {
+    print('pres route called');
     return MaterialPageRoute(
         settings: RouteSettings(name: routeName),
         builder: (_) => AddPrescriptionPage());

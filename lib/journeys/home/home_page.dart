@@ -9,6 +9,7 @@ import 'package:prescription_ocr/common/theme_colors.dart';
 import 'package:prescription_ocr/data/models/user/user_profile.dart';
 import 'package:prescription_ocr/journeys/common_widgets/PrescriptionCardCondensed.dart';
 import 'package:prescription_ocr/journeys/common_widgets/ReminderCardInformation.dart';
+import 'package:prescription_ocr/journeys/home/home_body.dart';
 import 'package:prescription_ocr/journeys/home/widgets/DashboardRow.dart';
 
 import 'package:prescription_ocr/journeys/home/widgets/RichTextHeader.dart';
@@ -24,6 +25,7 @@ class HomePage extends StatefulWidget {
   static const String routeName = '/home';
 
   static Route route() {
+    print('route called');
     return MaterialPageRoute(
         settings: RouteSettings(name: routeName), builder: (_) => HomePage());
   }
@@ -73,8 +75,7 @@ class _HomePageState extends State<HomePage> {
         child: RepositoryProvider(
       create: (context) => UserRepository(),
       child: BlocProvider(
-        create: (context) =>
-            HomePageBloc(RepositoryProvider.of<UserRepository>(context))..add(HomePageEvent.started()),
+        create: (context) => HomePageBloc(RepositoryProvider.of<UserRepository>(context))..add(const HomePageEvent.started()),
         child: BlocConsumer<HomePageBloc, HomePageState>(
           listener: (context, state) {
             state.mapOrNull(
@@ -89,9 +90,11 @@ class _HomePageState extends State<HomePage> {
           },
           builder: (context, state) {
             return state.maybeMap(
-              loaded: ((state) {
+              
+              loaded: (
+
+                (state) {
                 return Scaffold(
-                   
                   floatingActionButton: FloatingActionButton(
                     backgroundColor: ThemeColors.primaryGreen,
                     elevation: 12.0,
@@ -104,7 +107,7 @@ class _HomePageState extends State<HomePage> {
                     backgroundColor: Colors.white,
                   ),
                   appBar: AppBar(
-                     iconTheme: IconThemeData(color: Colors.black),
+                    iconTheme: IconThemeData(color: Colors.black),
                     elevation: 0,
                     actions: [
                       IconButton(
@@ -130,13 +133,14 @@ class _HomePageState extends State<HomePage> {
                 return Scaffold(
                   body: Center(
                     child: ErrorButton(
-                        buttonText: "Couldn't Load Profile",
+                        buttonText: "Couldn't Load",
                         function: () => BlocProvider.of<HomePageBloc>(context)
                             .add(const HomePageEvent.started())),
                   ),
                 );
               },
               orElse: () {
+                
                 return const Scaffold(
                   body: Center(child: Text('Undefined State')),
                 );
@@ -149,121 +153,7 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class HomePageBody extends StatelessWidget {
-  final UserProfile currentUser;
 
-  const HomePageBody({
-    Key? key,
-    required this.currentUser,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SizedBox(
-            height: 20,
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 20.0),
-            child: Align(
-                alignment: Alignment.centerLeft,
-                child: RichTextHeader(
-                  lightText: 'Hello, ',
-                  boldText: currentUser.firstName!,
-                )),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          DashboardRow(),
-          SizedBox(
-            height: 5,
-          ),
-          Row(
-            children: [
-              Expanded(
-                  child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Divider(
-                  color: Colors.black,
-                  thickness: 1,
-                ),
-              )),
-              //TODO Reolace with stateful widget to display all reminders in a list view
-              Align(
-                  alignment: Alignment.centerRight,
-                  child: RichTextHeader(
-                    lightText: 'Upcoming ',
-                    boldText: 'Reminders',
-                  )),
-              SizedBox(
-                width: 5,
-              )
-            ],
-          ),
-
-          Flexible(
-            child: SizedBox(
-              height: 250,
-              width: ScreenUtil.screenWidth,
-              child: ListView.separated(
-                physics: const BouncingScrollPhysics(),
-                scrollDirection: Axis.horizontal,
-                shrinkWrap: true,
-                itemCount: 5,
-                itemBuilder: (BuildContext context, int index) {
-                  return ReminderCardInformation();
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  return SizedBox(
-                    width: 10,
-                  );
-                },
-              ),
-            ),
-          ),
-          //TODO Replace with stateful widget to display all reminders in a list view
-          Row(
-            children: [
-              Align(
-                  alignment: Alignment.centerRight,
-                  child: RichTextHeader(
-                    lightText: 'Recent ',
-                    boldText: 'Prescriptions',
-                  )),
-              Expanded(
-                  child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Divider(
-                  color: Colors.black,
-                  thickness: 1,
-                ),
-              )),
-            ],
-          ),
-          SizedBox(
-              width: ScreenUtil.screenWidth,
-              child: Column(
-                children: [
-                  PrescriptionCardCondensed(),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  PrescriptionCardCondensed(),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  PrescriptionCardCondensed(),
-                ],
-              ))
-        ],
-      ),
-    );
-  }
-}
 
 
 // class ReminderCardCondensed2 extends StatelessWidget {

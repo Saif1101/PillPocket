@@ -71,7 +71,7 @@ class MyApp extends StatelessWidget {
         create: (context) => AuthBloc(
           authRepository: RepositoryProvider.of<AuthRepository>(context),
           userRepository: RepositoryProvider.of<UserRepository>(context),
-        ),
+        )..add(GoogleSignInRequested()),
         child: MaterialApp(
           title: 'PillPocket',
           debugShowCheckedModeBanner: false,

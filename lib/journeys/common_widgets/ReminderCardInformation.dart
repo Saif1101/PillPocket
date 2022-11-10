@@ -2,11 +2,49 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:prescription_ocr/common/theme_colors.dart';
+import 'package:prescription_ocr/common/extensions/date_extension.dart';
+import 'package:prescription_ocr/common/extensions/string_extension.dart';
+import 'package:prescription_ocr/data/models/reminder/reminder_model.dart';
 
 class ReminderCardInformation extends StatelessWidget {
+  //TODO Use reminder entity
+  final ReminderModel reminderModel; 
+
   const ReminderCardInformation({
+    required this.reminderModel,
     Key? key,
   }) : super(key: key);
+
+  Widget buildMealIcon(int? option){
+    if(option == 0){
+      return SizedBox(
+                  height: 150,
+                  width: 75,
+                  child: SvgPicture.asset(
+                    'assets/pill_before_meal_gb.svg',
+                    fit: BoxFit.contain,
+                  ),
+                );
+    } else if(option == 1){
+      return SizedBox(
+                  height: 150,
+                  width: 75,
+                  child: SvgPicture.asset(
+                    'assets/pill_with_meal_gb.svg',
+                    fit: BoxFit.contain,
+                  ),
+                );
+    }
+    return SizedBox(
+                  height: 150,
+                  width: 75,
+                  child: SvgPicture.asset(
+                    'assets/pill_after_meal_gb.svg',
+                    fit: BoxFit.contain,
+                  ),
+                );
+    
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +59,7 @@ class ReminderCardInformation extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Paracetamol',
+              reminderModel.reminderTitle!,
               style: GoogleFonts.roboto(
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
@@ -45,7 +83,7 @@ class ReminderCardInformation extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '500 mg.',
+                      '${reminderModel.dosage} mg.',
                       style: GoogleFonts.roboto(
                         fontWeight: FontWeight.w300,
                         color: Colors.black,
@@ -56,7 +94,7 @@ class ReminderCardInformation extends StatelessWidget {
                       height: 5,
                     ),
                     Text(
-                      'Duration',
+                      'Days',
                       style: GoogleFonts.roboto(
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
@@ -64,7 +102,7 @@ class ReminderCardInformation extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '4 weeks | 2 days',
+                      StringListExtension(reminderModel.reminderDays).getWords('\n'),
                       style: GoogleFonts.roboto(
                         fontWeight: FontWeight.w300,
                         color: Colors.black,
@@ -83,7 +121,7 @@ class ReminderCardInformation extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '9:00 AM\n3:00 PM\n4:00 PM\n',
+                      DateTimeExtension(reminderModel.reminderTimes).getTimes('\n'),
                       style: GoogleFonts.roboto(
                         fontWeight: FontWeight.w300,
                         color: Colors.black,
@@ -105,14 +143,7 @@ class ReminderCardInformation extends StatelessWidget {
                 SizedBox(
                   width: 15,
                 ),
-                SizedBox(
-                  height: 150,
-                  width: 75,
-                  child: SvgPicture.asset(
-                    'assets/pill_after_meal_gb.svg',
-                    fit: BoxFit.contain,
-                  ),
-                ),
+                buildMealIcon(reminderModel.mealCombination )
               ],
             )
           ],

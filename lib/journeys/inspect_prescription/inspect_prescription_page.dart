@@ -1,22 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:prescription_ocr/common/utils/screen_utils.dart';
 import 'package:prescription_ocr/common/theme_colors.dart';
+import 'package:prescription_ocr/data/models/prescription/prescription_model.dart';
 import 'package:prescription_ocr/journeys/add_prescription/add_prescription_page.dart';
+import 'package:prescription_ocr/journeys/common_widgets/BlackTextHeader.dart';
 import 'package:prescription_ocr/journeys/common_widgets/DateCard.dart';
 import 'package:prescription_ocr/journeys/edit_prescription/edit_prescription.dart';
 import 'package:prescription_ocr/journeys/history/history_page.dart';
 import 'package:prescription_ocr/journeys/profile/profile_page.dart';
 
 class InspectPrescriptionPage extends StatelessWidget {
-  const InspectPrescriptionPage({Key? key}) : super(key: key);
+  final PrescriptionModel prescriptionModel;
+  const InspectPrescriptionPage({Key? key, required this.prescriptionModel})
+      : super(key: key);
 
   static const String routeName = '/inspect-prescription';
 
-  static Route route() {
+  static Route route(PrescriptionModel args) {
     return MaterialPageRoute(
         settings: RouteSettings(name: routeName),
-        builder: (_) => InspectPrescriptionPage());
+        builder: (_) => InspectPrescriptionPage(
+              prescriptionModel: args,
+            ));
   }
 
   @override
@@ -54,97 +61,99 @@ class InspectPrescriptionPage extends StatelessWidget {
                       topLeft: Radius.circular(10),
                       topRight: Radius.circular(10))),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Prescription#A',
-                        style: GoogleFonts.roboto(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                          fontSize: 32,
-                        ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      prescriptionModel.prescriptionTitle!,
+                      style: GoogleFonts.roboto(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 32,
                       ),
-                      DateCard(),
-                    ],
+                    ),
                   ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Doctor',
-                        style: GoogleFonts.roboto(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                          fontSize: 24,
-                        ),
-                      ),
-                      Text(
-                        'Dr. Lorem Ipsum',
-                        style: GoogleFonts.roboto(
-                          fontWeight: FontWeight.w300,
-                          color: Colors.black,
-                          fontSize: 18,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        'Cause',
-                        style: GoogleFonts.roboto(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                          fontSize: 24,
-                        ),
-                      ),
-                      Text(
-                        'Stomach Distress',
-                        style: GoogleFonts.roboto(
-                          fontWeight: FontWeight.w300,
-                          color: Colors.black,
-                          fontSize: 18,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        'Notes',
-                        style: GoogleFonts.roboto(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                          fontSize: 24,
-                        ),
-                      ),
-                      Text(
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,"
-                        "quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit"
-                        "in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 3,
-                        style: GoogleFonts.roboto(
-                          fontWeight: FontWeight.w300,
-                          color: Colors.black,
-                          fontSize: 18,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      BlackTextHeader(header: 'Reminder Time(s)'),
-                      IconButton(
-                          onPressed: () {
-                            'Redirect to edit reminders';
-                          },
-                          icon: Icon(
-                            Icons.edit,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Doctor',
+                          style: GoogleFonts.roboto(
+                            fontWeight: FontWeight.bold,
                             color: Colors.black,
-                          ))
-                    ],
+                            fontSize: 24,
+                          ),
+                        ),
+                        Text(
+                          prescriptionModel.doctorName ?? "NA",
+                          style: GoogleFonts.roboto(
+                            fontWeight: FontWeight.w300,
+                            color: Colors.black,
+                            fontSize: 18,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          'Cause',
+                          style: GoogleFonts.roboto(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                            fontSize: 24,
+                          ),
+                        ),
+                        Text(
+                          prescriptionModel.cause ?? "NA",
+                          style: GoogleFonts.roboto(
+                            fontWeight: FontWeight.w300,
+                            color: Colors.black,
+                            fontSize: 18,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          'Notes',
+                          style: GoogleFonts.roboto(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                            fontSize: 24,
+                          ),
+                        ),
+                        Text(
+                          prescriptionModel.note ?? "NA",
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 3,
+                          style: GoogleFonts.roboto(
+                            fontWeight: FontWeight.w300,
+                            color: Colors.black,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        BlackTextHeader(header: 'Reminder Time(s)'),
+                        IconButton(
+                            onPressed: () {
+                              'Redirect to edit reminders';
+                            },
+                            icon: Icon(
+                              Icons.edit,
+                              color: Colors.black,
+                            ))
+                      ],
+                    ),
                   ),
                   Align(
                     alignment: Alignment.centerLeft,
@@ -193,12 +202,15 @@ class InspectPrescriptionPage extends StatelessWidget {
                   SizedBox(
                     height: 5,
                   ),
-                  Text(
-                    'Prescription',
-                    style: GoogleFonts.roboto(
-                      fontWeight: FontWeight.w800,
-                      color: Colors.black,
-                      fontSize: 18,
+                  Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Prescription',
+                      style: GoogleFonts.roboto(
+                        fontWeight: FontWeight.w800,
+                        color: Colors.black,
+                        fontSize: 18,
+                      ),
                     ),
                   ),
                   Divider(
@@ -206,10 +218,15 @@ class InspectPrescriptionPage extends StatelessWidget {
                     thickness: 1.0,
                   ),
                   Expanded(
-                    child: Image.asset(
-                      'assets/SamplePrescription.png',
-                      fit: BoxFit.contain,
-                    ),
+                    child: prescriptionModel.prescriptionPhotoUrl != null
+                        ? PhotoView(
+                            imageProvider: NetworkImage(
+                                prescriptionModel.prescriptionPhotoUrl!),
+                          )
+                        : const Center(
+                            child: Text(
+                                'This does not have a prescription image attached to it.'),
+                          ),
                   ),
                 ],
               ),

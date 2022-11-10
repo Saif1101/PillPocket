@@ -24,7 +24,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             //Fetch and Write user info to session storage
             final currentUserProfile =
                 await userRepository.getUserDetails(user.uid);
-            await userRepository.setSessionUser(currentUserProfile!);
+            final response =await userRepository.setSessionUser(currentUserProfile!);
             emit(Registered());
           } else {
             emit(Unregistered());

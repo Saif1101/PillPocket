@@ -38,6 +38,7 @@ class UserRepository {
   }
 
   Future<void> setSessionUser(UserProfile currentUser) async {
+    print("Writing user id: ${currentUser.uId}");
     await sessionStorage.write('currentUserId', currentUser.uId);
     await sessionStorage.write('firstName', currentUser.firstName);
     await sessionStorage.write('lastName', currentUser.lastName);
@@ -48,13 +49,17 @@ class UserRepository {
   }
 
   Future<UserProfile> getSessionUser() async {
-    final uId = await sessionStorage.read('curretUserId');
+    
+
+    final uId = await sessionStorage.read('currentUserId');
     final firstName = await sessionStorage.read('firstName');
     final lastName = await sessionStorage.read('lastName');
     final profilePhotoUrl = await sessionStorage.read('profilePhotoUrl');
     final age = await sessionStorage.read('age');
     final mobileNumber = await sessionStorage.read('mobileNumber');
     final email = await sessionStorage.read('email');
+
+    print("Fetching user id: ${uId}");
 
     return UserProfile(
         uId: uId,

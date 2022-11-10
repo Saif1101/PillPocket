@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:prescription_ocr/data/models/prescription/prescription_model.dart';
 import 'package:prescription_ocr/journeys/add_prescription/add_prescription_page.dart';
 import 'package:prescription_ocr/journeys/add_prescription/prescription_review_page.dart';
 import 'package:prescription_ocr/journeys/add_prescription/reminders_review_page.dart';
@@ -18,8 +19,8 @@ class AppRouter {
     print('This is route: ${settings.name}');
 
     switch (settings.name) {
-      case '/':
-        return HomePage.route();
+      // case '/':
+      //   return HomePage.route();
       case HomePage.routeName:
         return HomePage.route();
       case AddPrescriptionPage.routeName:
@@ -39,7 +40,7 @@ class AppRouter {
       case HistoryPage.routeName: 
         return  HistoryPage.route();
       case InspectPrescriptionPage.routeName: 
-        return InspectPrescriptionPage.route();
+        return InspectPrescriptionPage.route(settings.arguments as PrescriptionModel);
       case InspectReminderPage.routeName:
         return InspectReminderPage.route();
       default:

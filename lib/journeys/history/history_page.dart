@@ -116,7 +116,7 @@ class _HistoryPageState extends State<HistoryPage> {
       shrinkWrap: true,
       itemCount: 5,
       itemBuilder: (BuildContext context, int index) {
-        return PrescriptionCardCondensed();
+        return SizedBox();
       },
       separatorBuilder: (BuildContext context, int index) {
         return SizedBox(

@@ -32,13 +32,13 @@ class _LoginScreenState extends State<LoginScreen> {
           child: BlocConsumer<AuthBloc, AuthState>(
             listener: (context, state) {
               if (state is Registered) {
+                // Navigator.popAndPushNamed(context, '/home');
                 Navigator.pushNamedAndRemoveUntil(
                     context, '/home', (Route<dynamic> route) => false);
               }
             },
             builder: (context, state) {
               if (state is Initial) {
-                BlocProvider.of<AuthBloc>(context).add(GoogleSignInRequested());
                 return const Align(
                   alignment: Alignment.center,
                   child: CircularProgressIndicator(

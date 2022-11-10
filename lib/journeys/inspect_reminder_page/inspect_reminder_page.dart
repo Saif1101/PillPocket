@@ -4,6 +4,8 @@ import 'package:flutter_tags/flutter_tags.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:prescription_ocr/common/utils/screen_utils.dart';
 import 'package:prescription_ocr/common/theme_colors.dart';
+import 'package:prescription_ocr/journeys/common_widgets/BlackTextHeader.dart';
+import 'package:prescription_ocr/journeys/common_widgets/GreyTextDisplayWithHeader.dart';
 import 'package:prescription_ocr/journeys/inspect_reminder_page/medicines/medicines_widget.dart';
 import 'package:prescription_ocr/journeys/inspect_reminder_page/model/NotificationDayAndTime.dart';
 import 'package:prescription_ocr/journeys/inspect_reminder_page/widgets/DaySelectChip.dart';
@@ -67,10 +69,10 @@ class _InspectReminderPageState extends State<InspectReminderPage> {
     setState(() {});
   }
 
-  void setMealCombination(bool value, String label){
+  void setMealCombination(bool value, String label) {
     print("Bool label value before: ${mealCombination[label]}");
     print("print incoming value: ${!value} ");
-    mealCombination[label]=!value; 
+    mealCombination[label] = !value;
     print("After assignment: $mealCombination ");
   }
 
@@ -225,9 +227,12 @@ class _InspectReminderPageState extends State<InspectReminderPage> {
               ),
               BlackTextHeader(header: 'Duration'),
               Align(
-                alignment: Alignment.center,
-                child: DaySelectChip(day: 'Everyday',isSelected: selectedDays['Everyday']!, onTap: selectDay,)
-              ),
+                  alignment: Alignment.center,
+                  child: DaySelectChip(
+                    day: 'Everyday',
+                    isSelected: selectedDays['Everyday']!,
+                    onTap: selectDay,
+                  )),
               SizedBox(height: 10),
               Row(
                 children: [
@@ -267,13 +272,34 @@ class _InspectReminderPageState extends State<InspectReminderPage> {
                   alignment: WrapAlignment.center,
                   spacing: 5.0,
                   children: <Widget>[
-                    DaySelectChip(onTap: selectDay, day: 'Monday', isSelected: selectedDays['Monday']!),
-                    DaySelectChip(onTap: selectDay, day: 'Tuesday', isSelected: selectedDays['Tuesday']!),
-                    DaySelectChip(onTap: selectDay, day: 'Wednesday', isSelected: selectedDays['Wednesday']!),
-                    DaySelectChip(onTap: selectDay, day: 'Thursday', isSelected: selectedDays['Thursday']!),
-                    DaySelectChip(onTap: selectDay, day: 'Friday', isSelected: selectedDays['Friday']!),
-                    DaySelectChip(onTap: selectDay, day: 'Saturday', isSelected: selectedDays['Saturday']!),
-                    DaySelectChip(onTap: selectDay, day: 'Sunday', isSelected: selectedDays['Sunday']!),
+                    DaySelectChip(
+                        onTap: selectDay,
+                        day: 'Monday',
+                        isSelected: selectedDays['Monday']!),
+                    DaySelectChip(
+                        onTap: selectDay,
+                        day: 'Tuesday',
+                        isSelected: selectedDays['Tuesday']!),
+                    DaySelectChip(
+                        onTap: selectDay,
+                        day: 'Wednesday',
+                        isSelected: selectedDays['Wednesday']!),
+                    DaySelectChip(
+                        onTap: selectDay,
+                        day: 'Thursday',
+                        isSelected: selectedDays['Thursday']!),
+                    DaySelectChip(
+                        onTap: selectDay,
+                        day: 'Friday',
+                        isSelected: selectedDays['Friday']!),
+                    DaySelectChip(
+                        onTap: selectDay,
+                        day: 'Saturday',
+                        isSelected: selectedDays['Saturday']!),
+                    DaySelectChip(
+                        onTap: selectDay,
+                        day: 'Sunday',
+                        isSelected: selectedDays['Sunday']!),
                   ]),
               SizedBox(
                 height: 10,
@@ -286,27 +312,33 @@ class _InspectReminderPageState extends State<InspectReminderPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   GestureDetector(
-                    onTap: (){
-                      setMealCombination( mealCombination['Before']!, 'Before');
-                      setState(() {                       
-                      });
-                    },
-                    child: MealCombinationButton(isSelected: mealCombination['Before']!, label: 'Before',)), //
+                      onTap: () {
+                        setMealCombination(
+                            mealCombination['Before']!, 'Before');
+                        setState(() {});
+                      },
+                      child: MealCombinationButton(
+                        isSelected: mealCombination['Before']!,
+                        label: 'Before',
+                      )), //
                   GestureDetector(
-                    onTap: (){
-                      setMealCombination( mealCombination['With']!, 'With');
-                      setState(() {                       
-                      });
-
-                    },
-                    child: MealCombinationButton(isSelected: mealCombination['With']!, label: 'With',)), //
+                      onTap: () {
+                        setMealCombination(mealCombination['With']!, 'With');
+                        setState(() {});
+                      },
+                      child: MealCombinationButton(
+                        isSelected: mealCombination['With']!,
+                        label: 'With',
+                      )), //
                   GestureDetector(
-                    onTap: (){
-                      setMealCombination( mealCombination['After']!, 'After');
-                      setState(() {                       
-                      });
-                    },
-                    child: MealCombinationButton(isSelected: mealCombination['After']!, label: 'After',)), //
+                      onTap: () {
+                        setMealCombination(mealCombination['After']!, 'After');
+                        setState(() {});
+                      },
+                      child: MealCombinationButton(
+                        isSelected: mealCombination['After']!,
+                        label: 'After',
+                      )), //
                 ],
               ),
               SizedBox(
@@ -317,10 +349,6 @@ class _InspectReminderPageState extends State<InspectReminderPage> {
         ));
   }
 }
-
-
-
-
 
 class GRBWGColorSwitchButton extends StatelessWidget {
   final String text;

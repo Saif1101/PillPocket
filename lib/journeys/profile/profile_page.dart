@@ -5,6 +5,7 @@ import 'package:prescription_ocr/blocs/authentication/auth_bloc.dart';
 import 'package:prescription_ocr/blocs/profile_page/profile_page_bloc.dart';
 import 'package:prescription_ocr/common/utils/screen_utils.dart';
 import 'package:prescription_ocr/common/theme_colors.dart';
+import 'package:prescription_ocr/journeys/common_widgets/GreyTextDisplayWithHeader.dart';
 import 'package:prescription_ocr/journeys/widgets/circular_progress_indicator.dart';
 import 'package:prescription_ocr/journeys/widgets/error_retry_button.dart';
 import 'package:prescription_ocr/repositories/user/user_repository.dart';
@@ -17,7 +18,7 @@ class ProfilePage extends StatelessWidget {
   static Route route() {
     return MaterialPageRoute(
         settings: RouteSettings(name: routeName),
-        builder: (_) => ProfilePage());
+        builder: (_) => const ProfilePage());
   }
 
   @override
@@ -45,7 +46,7 @@ class ProfilePage extends StatelessWidget {
           child: BlocProvider<ProfilePageBloc>(
             create: (context) =>
                 ProfilePageBloc(RepositoryProvider.of<UserRepository>(context))
-                  ..add(ProfilePageEvent.started()),
+                  ..add(const ProfilePageEvent.started()),
             child: BlocConsumer<ProfilePageBloc, ProfilePageState>(
               listener: (context, state) {
                 // TODO: implement listener
@@ -139,73 +140,6 @@ class ProfilePage extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class GreyTextDisplayWithHeader extends StatelessWidget {
-  final String header;
-  final String displayText;
-  final double? headerSize;
-  final double? textSize;
-  const GreyTextDisplayWithHeader({
-    required this.header,
-    required this.displayText,
-    Key? key,
-    this.headerSize,
-    this.textSize,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        BlackTextHeader(
-          header: header,
-          fontSize: headerSize,
-        ),
-        SizedBox(
-          height: 5,
-        ),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
-          decoration: BoxDecoration(
-            color: ThemeColors.primaryGrey,
-          ),
-          child: Text(
-            displayText,
-            style: GoogleFonts.roboto(
-              fontWeight: FontWeight.w500,
-              color: Colors.black,
-              fontSize: textSize ?? 16,
-            ),
-          ),
-        )
-      ],
-    );
-  }
-}
-
-class BlackTextHeader extends StatelessWidget {
-  final double? fontSize;
-  const BlackTextHeader({
-    Key? key,
-    required this.header,
-    this.fontSize,
-  }) : super(key: key);
-
-  final String header;
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      header,
-      style: GoogleFonts.roboto(
-        fontWeight: FontWeight.bold,
-        color: Colors.black,
-        fontSize: fontSize ?? 20,
       ),
     );
   }

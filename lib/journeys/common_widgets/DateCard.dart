@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class DateCard extends StatelessWidget {
+  final DateTime dateTime;
+
   const DateCard({
+    required this.dateTime,
     Key? key,
   }) : super(key: key);
 
@@ -25,8 +28,8 @@ class DateCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Text(
-                  '10/11/12',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  '${dateTime.day}/${dateTime.month}/${dateTime.year}',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
             ]),

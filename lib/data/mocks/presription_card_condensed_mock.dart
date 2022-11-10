@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:prescription_ocr/common/theme_colors.dart';
-import 'package:prescription_ocr/data/models/prescription/prescription_model.dart';
 import 'package:prescription_ocr/journeys/common_widgets/DateCard.dart';
 import 'package:prescription_ocr/journeys/inspect_prescription/inspect_prescription_page.dart';
 
-class PrescriptionCardCondensed extends StatelessWidget {
-  final PrescriptionModel prescriptionModel;
-
-  const PrescriptionCardCondensed({
+class PrescriptionCardCondensedMock extends StatelessWidget {
+  const PrescriptionCardCondensedMock({
     Key? key,
-    required this.prescriptionModel,
   }) : super(key: key);
 
   @override
@@ -34,24 +30,19 @@ class PrescriptionCardCondensed extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Flexible(
-                        child: Text(
-                          prescriptionModel.prescriptionTitle!,
-                          overflow: TextOverflow.fade,
-                          style: GoogleFonts.roboto(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                            fontSize: 32,
-                          ),
+                      Text(
+                        'Prescription#A',
+                        style: GoogleFonts.roboto(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                          fontSize: 32,
                         ),
                       ),
-                      DateCard(
-                        dateTime: prescriptionModel.creationDateTime!,
-                      ),
+                      //DateCard(),
                     ],
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Flexible(
@@ -68,7 +59,7 @@ class PrescriptionCardCondensed extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              prescriptionModel.doctorName ?? "NA",
+                              'Dr. Lorem Ipsum',
                               style: GoogleFonts.roboto(
                                 fontWeight: FontWeight.w300,
                                 color: Colors.black,
@@ -87,7 +78,7 @@ class PrescriptionCardCondensed extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              prescriptionModel.cause ?? "NA",
+                              'Stomach Distress',
                               style: GoogleFonts.roboto(
                                 fontWeight: FontWeight.w300,
                                 color: Colors.black,
@@ -106,7 +97,9 @@ class PrescriptionCardCondensed extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              prescriptionModel.note ?? "NA",
+                              "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,"
+                              "quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit"
+                              "in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
                               overflow: TextOverflow.ellipsis,
                               maxLines: 3,
                               style: GoogleFonts.roboto(
@@ -131,10 +124,9 @@ class PrescriptionCardCondensed extends StatelessWidget {
             IconButton(
                 onPressed: () {
                   Navigator.pushNamed(
-                      context, InspectPrescriptionPage.routeName,
-                      arguments: prescriptionModel);
+                      context, InspectPrescriptionPage.routeName);
                 },
-                icon: const Icon(Icons.keyboard_arrow_right)),
+                icon: Icon(Icons.keyboard_arrow_right)),
           ],
         ),
       ],
