@@ -4,6 +4,9 @@ import 'package:prescription_ocr/data/models/reminder/reminder_model.dart';
 class ReminderRepository {
   final _db = FirebaseFirestore.instance.collection("reminders");
 
+  //for upcoming reminders, could store the reminder document in different collections which 
+  //represent time intervals for faster querying. 
+
   Future<List<ReminderModel>?> getAllReminders(String userId) {
     List<ReminderModel> reminders = [];
     return _db.doc(userId).collection('UserReminders').get().then((event) {

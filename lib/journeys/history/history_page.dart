@@ -4,6 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:prescription_ocr/journeys/common_widgets/GreenWhitePageHeader.dart';
 import 'package:prescription_ocr/journeys/common_widgets/PrescriptionCardCondensed.dart';
 import 'package:prescription_ocr/journeys/common_widgets/ReminderCardCondensed.dart';
+import 'package:prescription_ocr/journeys/history/RemindersList.dart';
+import 'package:prescription_ocr/journeys/home/recent_prescriptions_column.dart';
 
 import 'package:prescription_ocr/journeys/inspect_reminder_page/inspect_reminder_page.dart';
 
@@ -88,7 +90,7 @@ class _HistoryPageState extends State<HistoryPage> {
             ),
             Expanded(
               child:
-                  showReminders ? showRemindersList() : showPrescriptionsList(),
+                  showReminders ? RemindersList() : RecentPrescriptionsColumn(),
             )
           ]),
     ));
