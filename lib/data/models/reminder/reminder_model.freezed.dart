@@ -21,11 +21,12 @@ ReminderModel _$ReminderModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ReminderModel {
   String? get prescriptionID => throw _privateConstructorUsedError;
-  int? get mealCombination => throw _privateConstructorUsedError;
-  int? get dosage => throw _privateConstructorUsedError;
-  String? get reminderTitle => throw _privateConstructorUsedError;
   String? get reminderId => throw _privateConstructorUsedError;
-  List<String>? get reminderDays => throw _privateConstructorUsedError;
+  int? get notificationId => throw _privateConstructorUsedError;
+  Map<String, bool>? get mealCombination => throw _privateConstructorUsedError;
+  String? get cause => throw _privateConstructorUsedError;
+  String? get reminderTitle => throw _privateConstructorUsedError;
+  Map<String, bool>? get selectedDays => throw _privateConstructorUsedError;
   @TimestampConverter()
   List<DateTime>? get reminderTimes => throw _privateConstructorUsedError;
   List<String>? get medicines => throw _privateConstructorUsedError;
@@ -45,11 +46,12 @@ abstract class $ReminderModelCopyWith<$Res> {
   @useResult
   $Res call(
       {String? prescriptionID,
-      int? mealCombination,
-      int? dosage,
-      String? reminderTitle,
       String? reminderId,
-      List<String>? reminderDays,
+      int? notificationId,
+      Map<String, bool>? mealCombination,
+      String? cause,
+      String? reminderTitle,
+      Map<String, bool>? selectedDays,
       @TimestampConverter() List<DateTime>? reminderTimes,
       List<String>? medicines,
       String? note});
@@ -69,11 +71,12 @@ class _$ReminderModelCopyWithImpl<$Res, $Val extends ReminderModel>
   @override
   $Res call({
     Object? prescriptionID = freezed,
-    Object? mealCombination = freezed,
-    Object? dosage = freezed,
-    Object? reminderTitle = freezed,
     Object? reminderId = freezed,
-    Object? reminderDays = freezed,
+    Object? notificationId = freezed,
+    Object? mealCombination = freezed,
+    Object? cause = freezed,
+    Object? reminderTitle = freezed,
+    Object? selectedDays = freezed,
     Object? reminderTimes = freezed,
     Object? medicines = freezed,
     Object? note = freezed,
@@ -83,26 +86,30 @@ class _$ReminderModelCopyWithImpl<$Res, $Val extends ReminderModel>
           ? _value.prescriptionID
           : prescriptionID // ignore: cast_nullable_to_non_nullable
               as String?,
-      mealCombination: freezed == mealCombination
-          ? _value.mealCombination
-          : mealCombination // ignore: cast_nullable_to_non_nullable
-              as int?,
-      dosage: freezed == dosage
-          ? _value.dosage
-          : dosage // ignore: cast_nullable_to_non_nullable
-              as int?,
-      reminderTitle: freezed == reminderTitle
-          ? _value.reminderTitle
-          : reminderTitle // ignore: cast_nullable_to_non_nullable
-              as String?,
       reminderId: freezed == reminderId
           ? _value.reminderId
           : reminderId // ignore: cast_nullable_to_non_nullable
               as String?,
-      reminderDays: freezed == reminderDays
-          ? _value.reminderDays
-          : reminderDays // ignore: cast_nullable_to_non_nullable
-              as List<String>?,
+      notificationId: freezed == notificationId
+          ? _value.notificationId
+          : notificationId // ignore: cast_nullable_to_non_nullable
+              as int?,
+      mealCombination: freezed == mealCombination
+          ? _value.mealCombination
+          : mealCombination // ignore: cast_nullable_to_non_nullable
+              as Map<String, bool>?,
+      cause: freezed == cause
+          ? _value.cause
+          : cause // ignore: cast_nullable_to_non_nullable
+              as String?,
+      reminderTitle: freezed == reminderTitle
+          ? _value.reminderTitle
+          : reminderTitle // ignore: cast_nullable_to_non_nullable
+              as String?,
+      selectedDays: freezed == selectedDays
+          ? _value.selectedDays
+          : selectedDays // ignore: cast_nullable_to_non_nullable
+              as Map<String, bool>?,
       reminderTimes: freezed == reminderTimes
           ? _value.reminderTimes
           : reminderTimes // ignore: cast_nullable_to_non_nullable
@@ -129,11 +136,12 @@ abstract class _$$_ReminderModelCopyWith<$Res>
   @useResult
   $Res call(
       {String? prescriptionID,
-      int? mealCombination,
-      int? dosage,
-      String? reminderTitle,
       String? reminderId,
-      List<String>? reminderDays,
+      int? notificationId,
+      Map<String, bool>? mealCombination,
+      String? cause,
+      String? reminderTitle,
+      Map<String, bool>? selectedDays,
       @TimestampConverter() List<DateTime>? reminderTimes,
       List<String>? medicines,
       String? note});
@@ -151,11 +159,12 @@ class __$$_ReminderModelCopyWithImpl<$Res>
   @override
   $Res call({
     Object? prescriptionID = freezed,
-    Object? mealCombination = freezed,
-    Object? dosage = freezed,
-    Object? reminderTitle = freezed,
     Object? reminderId = freezed,
-    Object? reminderDays = freezed,
+    Object? notificationId = freezed,
+    Object? mealCombination = freezed,
+    Object? cause = freezed,
+    Object? reminderTitle = freezed,
+    Object? selectedDays = freezed,
     Object? reminderTimes = freezed,
     Object? medicines = freezed,
     Object? note = freezed,
@@ -165,26 +174,30 @@ class __$$_ReminderModelCopyWithImpl<$Res>
           ? _value.prescriptionID
           : prescriptionID // ignore: cast_nullable_to_non_nullable
               as String?,
-      mealCombination: freezed == mealCombination
-          ? _value.mealCombination
-          : mealCombination // ignore: cast_nullable_to_non_nullable
-              as int?,
-      dosage: freezed == dosage
-          ? _value.dosage
-          : dosage // ignore: cast_nullable_to_non_nullable
-              as int?,
-      reminderTitle: freezed == reminderTitle
-          ? _value.reminderTitle
-          : reminderTitle // ignore: cast_nullable_to_non_nullable
-              as String?,
       reminderId: freezed == reminderId
           ? _value.reminderId
           : reminderId // ignore: cast_nullable_to_non_nullable
               as String?,
-      reminderDays: freezed == reminderDays
-          ? _value._reminderDays
-          : reminderDays // ignore: cast_nullable_to_non_nullable
-              as List<String>?,
+      notificationId: freezed == notificationId
+          ? _value.notificationId
+          : notificationId // ignore: cast_nullable_to_non_nullable
+              as int?,
+      mealCombination: freezed == mealCombination
+          ? _value._mealCombination
+          : mealCombination // ignore: cast_nullable_to_non_nullable
+              as Map<String, bool>?,
+      cause: freezed == cause
+          ? _value.cause
+          : cause // ignore: cast_nullable_to_non_nullable
+              as String?,
+      reminderTitle: freezed == reminderTitle
+          ? _value.reminderTitle
+          : reminderTitle // ignore: cast_nullable_to_non_nullable
+              as String?,
+      selectedDays: freezed == selectedDays
+          ? _value._selectedDays
+          : selectedDays // ignore: cast_nullable_to_non_nullable
+              as Map<String, bool>?,
       reminderTimes: freezed == reminderTimes
           ? _value._reminderTimes
           : reminderTimes // ignore: cast_nullable_to_non_nullable
@@ -207,15 +220,17 @@ class __$$_ReminderModelCopyWithImpl<$Res>
 class _$_ReminderModel implements _ReminderModel {
   const _$_ReminderModel(
       {this.prescriptionID,
-      this.mealCombination,
-      this.dosage,
-      this.reminderTitle,
       this.reminderId,
-      final List<String>? reminderDays,
+      this.notificationId,
+      final Map<String, bool>? mealCombination,
+      this.cause,
+      this.reminderTitle,
+      final Map<String, bool>? selectedDays,
       @TimestampConverter() final List<DateTime>? reminderTimes,
       final List<String>? medicines,
       this.note})
-      : _reminderDays = reminderDays,
+      : _mealCombination = mealCombination,
+        _selectedDays = selectedDays,
         _reminderTimes = reminderTimes,
         _medicines = medicines;
 
@@ -225,20 +240,29 @@ class _$_ReminderModel implements _ReminderModel {
   @override
   final String? prescriptionID;
   @override
-  final int? mealCombination;
-  @override
-  final int? dosage;
-  @override
-  final String? reminderTitle;
-  @override
   final String? reminderId;
-  final List<String>? _reminderDays;
   @override
-  List<String>? get reminderDays {
-    final value = _reminderDays;
+  final int? notificationId;
+  final Map<String, bool>? _mealCombination;
+  @override
+  Map<String, bool>? get mealCombination {
+    final value = _mealCombination;
     if (value == null) return null;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
+    return EqualUnmodifiableMapView(value);
+  }
+
+  @override
+  final String? cause;
+  @override
+  final String? reminderTitle;
+  final Map<String, bool>? _selectedDays;
+  @override
+  Map<String, bool>? get selectedDays {
+    final value = _selectedDays;
+    if (value == null) return null;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(value);
   }
 
   final List<DateTime>? _reminderTimes;
@@ -264,26 +288,23 @@ class _$_ReminderModel implements _ReminderModel {
   final String? note;
 
   @override
-  String toString() {
-    return 'ReminderModel(prescriptionID: $prescriptionID, mealCombination: $mealCombination, dosage: $dosage, reminderTitle: $reminderTitle, reminderId: $reminderId, reminderDays: $reminderDays, reminderTimes: $reminderTimes, medicines: $medicines, note: $note)';
-  }
-
-  @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ReminderModel &&
             (identical(other.prescriptionID, prescriptionID) ||
                 other.prescriptionID == prescriptionID) &&
-            (identical(other.mealCombination, mealCombination) ||
-                other.mealCombination == mealCombination) &&
-            (identical(other.dosage, dosage) || other.dosage == dosage) &&
-            (identical(other.reminderTitle, reminderTitle) ||
-                other.reminderTitle == reminderTitle) &&
             (identical(other.reminderId, reminderId) ||
                 other.reminderId == reminderId) &&
+            (identical(other.notificationId, notificationId) ||
+                other.notificationId == notificationId) &&
             const DeepCollectionEquality()
-                .equals(other._reminderDays, _reminderDays) &&
+                .equals(other._mealCombination, _mealCombination) &&
+            (identical(other.cause, cause) || other.cause == cause) &&
+            (identical(other.reminderTitle, reminderTitle) ||
+                other.reminderTitle == reminderTitle) &&
+            const DeepCollectionEquality()
+                .equals(other._selectedDays, _selectedDays) &&
             const DeepCollectionEquality()
                 .equals(other._reminderTimes, _reminderTimes) &&
             const DeepCollectionEquality()
@@ -296,11 +317,12 @@ class _$_ReminderModel implements _ReminderModel {
   int get hashCode => Object.hash(
       runtimeType,
       prescriptionID,
-      mealCombination,
-      dosage,
-      reminderTitle,
       reminderId,
-      const DeepCollectionEquality().hash(_reminderDays),
+      notificationId,
+      const DeepCollectionEquality().hash(_mealCombination),
+      cause,
+      reminderTitle,
+      const DeepCollectionEquality().hash(_selectedDays),
       const DeepCollectionEquality().hash(_reminderTimes),
       const DeepCollectionEquality().hash(_medicines),
       note);
@@ -322,11 +344,12 @@ class _$_ReminderModel implements _ReminderModel {
 abstract class _ReminderModel implements ReminderModel {
   const factory _ReminderModel(
       {final String? prescriptionID,
-      final int? mealCombination,
-      final int? dosage,
-      final String? reminderTitle,
       final String? reminderId,
-      final List<String>? reminderDays,
+      final int? notificationId,
+      final Map<String, bool>? mealCombination,
+      final String? cause,
+      final String? reminderTitle,
+      final Map<String, bool>? selectedDays,
       @TimestampConverter() final List<DateTime>? reminderTimes,
       final List<String>? medicines,
       final String? note}) = _$_ReminderModel;
@@ -337,15 +360,17 @@ abstract class _ReminderModel implements ReminderModel {
   @override
   String? get prescriptionID;
   @override
-  int? get mealCombination;
+  String? get reminderId;
   @override
-  int? get dosage;
+  int? get notificationId;
+  @override
+  Map<String, bool>? get mealCombination;
+  @override
+  String? get cause;
   @override
   String? get reminderTitle;
   @override
-  String? get reminderId;
-  @override
-  List<String>? get reminderDays;
+  Map<String, bool>? get selectedDays;
   @override
   @TimestampConverter()
   List<DateTime>? get reminderTimes;

@@ -1,16 +1,19 @@
-import 'dart:io';
+
+import 'package:camera/camera.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:photo_view/photo_view.dart';
+
 import 'package:flutter/material.dart';
 import 'package:prescription_ocr/common/utils/screen_utils.dart';
 import 'package:prescription_ocr/common/theme_colors.dart';
 import 'package:prescription_ocr/journeys/add_prescription/reminders_review_page.dart';
 import 'package:prescription_ocr/journeys/common_widgets/GreyTextDisplayWithHeader.dart';
+import 'package:prescription_ocr/journeys/widgets/circular_progress_indicator.dart';
+import 'package:prescription_ocr/main.dart';
 
 import '../profile/profile_page.dart';
 
-class PrescriptionReviewPage extends StatelessWidget {
+class PrescriptionReviewPage extends StatefulWidget {
   static const String routeName = '/prescription-review';
 
   const PrescriptionReviewPage({
@@ -24,6 +27,45 @@ class PrescriptionReviewPage extends StatelessWidget {
   }
 
   @override
+  State<PrescriptionReviewPage> createState() => _PrescriptionReviewPageState();
+}
+
+class _PrescriptionReviewPageState extends State<PrescriptionReviewPage> {
+
+
+  late CameraController controller;
+
+
+  @override
+  void initState(){
+    super.initState();
+    controller = CameraController(cameras[0], ResolutionPreset.max);
+    controller.initialize().then((_) {
+      if (!mounted) {
+        return;
+      }
+      setState(() {});
+    }).catchError((Object e) {
+      if (e is CameraException) {
+        switch (e.code) {
+          case 'CameraAccessDenied':
+            print('User denied camera access.');
+            break;
+          default:
+            print('Handle other errors.');
+            break;
+        }
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+  
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
@@ -34,8 +76,9 @@ class PrescriptionReviewPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                height: ScreenUtil.screenHeight / 2,
-                child: Placeholder(),
+                width: ScreenUtil.screenWidth,
+                height: ScreenUtil.screenWidth,
+                child: !controller.value.isInitialized?LoadingWidget():CameraPreview(controller),
               ),
               Material(
                 elevation: 5,

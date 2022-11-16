@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:prescription_ocr/blocs/home_page/home_page_bloc.dart';
+import 'package:prescription_ocr/blocs/recent_prescriptions/recent_prescriptions_bloc.dart';
+import 'package:prescription_ocr/blocs/upcoming_reminders/upcoming_reminders_bloc.dart';
 
 import 'package:prescription_ocr/common/utils/screen_utils.dart';
 import 'package:prescription_ocr/common/theme_colors.dart';
@@ -17,6 +19,8 @@ import 'package:prescription_ocr/journeys/home/widgets/RichTextHeader.dart';
 import 'package:prescription_ocr/journeys/profile/profile_page.dart';
 import 'package:prescription_ocr/journeys/widgets/circular_progress_indicator.dart';
 import 'package:prescription_ocr/journeys/widgets/error_retry_button.dart';
+import 'package:prescription_ocr/repositories/prescription/prescription_repository.dart';
+import 'package:prescription_ocr/repositories/reminder/reminder_repository.dart';
 import 'package:prescription_ocr/repositories/user/user_repository.dart';
 
 class HomePage extends StatefulWidget {
@@ -72,10 +76,31 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: RepositoryProvider(
-      create: (context) => UserRepository(),
-      child: BlocProvider(
-        create: (context) => HomePageBloc(RepositoryProvider.of<UserRepository>(context))..add(const HomePageEvent.started()),
+        child: MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider(
+          create: (context) => UserRepository(),
+        ),
+        RepositoryProvider(
+          create: (context) => ReminderRepository(),
+        ),
+      ],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) =>
+                HomePageBloc(RepositoryProvider.of<UserRepository>(context))
+                  ..add(const HomePageEvent.started()),
+          ),
+          BlocProvider(
+            create: (context) => UpcomingRemindersBloc(
+                reminderRepository:
+                    RepositoryProvider.of<ReminderRepository>(context),
+                userRepository: RepositoryProvider.of<UserRepository>(context))
+              ..add(const UpcomingRemindersEvent.started()),
+          ),
+          
+        ],
         child: BlocConsumer<HomePageBloc, HomePageState>(
           listener: (context, state) {
             state.mapOrNull(
@@ -90,10 +115,7 @@ class _HomePageState extends State<HomePage> {
           },
           builder: (context, state) {
             return state.maybeMap(
-              
-              loaded: (
-
-                (state) {
+              loaded: ((state) {
                 return Scaffold(
                   floatingActionButton: FloatingActionButton(
                     backgroundColor: ThemeColors.primaryGreen,
@@ -140,7 +162,6 @@ class _HomePageState extends State<HomePage> {
                 );
               },
               orElse: () {
-                
                 return const Scaffold(
                   body: Center(child: Text('Undefined State')),
                 );

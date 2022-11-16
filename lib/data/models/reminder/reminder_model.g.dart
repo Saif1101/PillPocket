@@ -9,13 +9,16 @@ part of 'reminder_model.dart';
 _$_ReminderModel _$$_ReminderModelFromJson(Map<String, dynamic> json) =>
     _$_ReminderModel(
       prescriptionID: json['prescription_i_d'] as String?,
-      mealCombination: json['meal_combination'] as int?,
-      dosage: json['dosage'] as int?,
-      reminderTitle: json['reminder_title'] as String?,
       reminderId: json['reminder_id'] as String?,
-      reminderDays: (json['reminder_days'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
+      notificationId: json['notification_id'] as int?,
+      mealCombination: (json['meal_combination'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, e as bool),
+      ),
+      cause: json['cause'] as String?,
+      reminderTitle: json['reminder_title'] as String?,
+      selectedDays: (json['selected_days'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, e as bool),
+      ),
       reminderTimes: (json['reminder_times'] as List<dynamic>?)
           ?.map((e) => const TimestampConverter().fromJson(e as Timestamp))
           .toList(),
@@ -28,11 +31,12 @@ _$_ReminderModel _$$_ReminderModelFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$_ReminderModelToJson(_$_ReminderModel instance) =>
     <String, dynamic>{
       'prescription_i_d': instance.prescriptionID,
-      'meal_combination': instance.mealCombination,
-      'dosage': instance.dosage,
-      'reminder_title': instance.reminderTitle,
       'reminder_id': instance.reminderId,
-      'reminder_days': instance.reminderDays,
+      'notification_id': instance.notificationId,
+      'meal_combination': instance.mealCombination,
+      'cause': instance.cause,
+      'reminder_title': instance.reminderTitle,
+      'selected_days': instance.selectedDays,
       'reminder_times': instance.reminderTimes
           ?.map(const TimestampConverter().toJson)
           .toList(),

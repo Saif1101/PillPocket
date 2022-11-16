@@ -1,11 +1,15 @@
-extension StringListExtension on List<String>? {
+extension StringMapExtension on Map<String,bool>? {
 
-  String getWords(String separator) {
+  String getDays(String separator) {
+    print(this!);
     String result = '';
-    this?.forEach((element) {
-      result += "${element} $separator";
-    });
+    for (var element in this!.keys) { 
+      if(this![element]!){
+        result+='$element $separator';
+      }
+    }
     return result;
   }
 
 }
+

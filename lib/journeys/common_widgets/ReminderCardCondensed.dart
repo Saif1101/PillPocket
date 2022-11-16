@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:prescription_ocr/data/models/reminder/reminder_model.dart';
 import 'package:prescription_ocr/journeys/common_widgets/EditDeleteButtonBar.dart';
 import 'package:prescription_ocr/journeys/common_widgets/ReminderCardInformation.dart';
 
@@ -13,8 +14,23 @@ class ReminderCardCondensed extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Expanded(
-          // ReminderCardInformation()
-          child: SizedBox(),
+          child: ReminderCardInformation(
+            reminderModel: ReminderModel(
+              reminderTitle: 'Sample Prescription',
+              mealCombination: {'Before': true, 'With': false, "After": false},
+              
+              selectedDays: {
+                'Monday': false,
+                'Tuesday': true,
+                'Wednesday': true,
+                'Thursday': false,
+                'Friday': false,
+                'Saturday': false,
+                'Sunday': false,
+                'Everyday': false,
+              },
+            ),
+          ),
         ),
         EditDeleteButtonBar(),
       ],

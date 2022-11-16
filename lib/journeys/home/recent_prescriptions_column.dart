@@ -6,6 +6,7 @@ import 'package:prescription_ocr/journeys/common_widgets/PrescriptionCardCondens
 import 'package:prescription_ocr/journeys/widgets/circular_progress_indicator.dart';
 import 'package:prescription_ocr/journeys/widgets/error_retry_button.dart';
 import 'package:prescription_ocr/repositories/prescription/prescription_repository.dart';
+import 'package:prescription_ocr/repositories/reminder/reminder_repository.dart';
 import 'package:prescription_ocr/repositories/user/user_repository.dart';
 
 class RecentPrescriptionsColumn extends StatelessWidget {
@@ -16,24 +17,23 @@ class RecentPrescriptionsColumn extends StatelessWidget {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider(
-          create: (context) => PrescriptionRepository(),
+          create: (context) => ReminderRepository(),
         ),
         RepositoryProvider(
-          create: (context) => UserRepository(),
+          create: (context) => PrescriptionRepository(),
         ),
       ],
       child: BlocProvider(
         create: (context) => RecentPrescriptionsBloc(
             prescriptionRepository:
                 RepositoryProvider.of<PrescriptionRepository>(context),
-            userRepository: RepositoryProvider.of<UserRepository>(context))
-          ..add(const RecentPrescriptionsEvent.started()),
+            userRepository: RepositoryProvider.of<UserRepository>(context))..add(RecentPrescriptionsEvent.started()),
         child: BlocConsumer<RecentPrescriptionsBloc, RecentPrescriptionsState>(
           listener: (context, state) {
             state.mapOrNull(
               initial: (value) {
                 BlocProvider.of<RecentPrescriptionsBloc>(context)
-                    .add(const RecentPrescriptionsEvent.started());
+                    .add(RecentPrescriptionsEvent.started());
               },
             );
           },
@@ -66,7 +66,8 @@ class RecentPrescriptionsColumn extends StatelessWidget {
                       ),
                     );
             }, loading: (state) {
-              return const SizedBox(height:250, child: const Center(child: LoadingWidget()));
+              return const SizedBox(
+                  height: 250, child: const Center(child: LoadingWidget()));
             }, error: (value) {
               return Center(
                 child: ErrorButton(

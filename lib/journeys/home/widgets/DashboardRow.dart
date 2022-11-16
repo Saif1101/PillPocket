@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:prescription_ocr/blocs/home_page/home_page_bloc.dart';
+import 'package:prescription_ocr/blocs/recent_prescriptions/recent_prescriptions_bloc.dart';
+import 'package:prescription_ocr/blocs/upcoming_reminders/upcoming_reminders_bloc.dart';
 import 'package:prescription_ocr/common/theme_colors.dart';
 import 'package:prescription_ocr/journeys/history/history_page.dart';
 import 'package:prescription_ocr/journeys/home/widgets/DashboardGreenButton.dart';
@@ -18,15 +22,23 @@ class DashboardRow extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           DashboardGreenButton(
-            onTap: () {
-              Navigator.pushNamed(context, HistoryPage.routeName);
+            onTap: ()async{
+             Navigator.pushNamed(context, HistoryPage.routeName).then((value) {
+              BlocProvider.of<RecentPrescriptionsBloc>(context).add(RecentPrescriptionsEvent.started());
+             });
+              
             },
             text: 'History',
             icon: Icons.history_outlined,
           ),
           DashboardGreenButton(
-            onTap: () {
-              Navigator.pushNamed(context, InspectReminderPage.routeName);
+            onTap: () async {
+              Navigator.pushNamed(context, InspectReminderPage.routeName).then((value) {
+               
+                 BlocProvider.of<UpcomingRemindersBloc>(context).add(UpcomingRemindersEvent.started());
+              });
+              
+
             },
             text: 'Reminder',
             icon: Icons.add,

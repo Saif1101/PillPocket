@@ -1,4 +1,5 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:camera/camera.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -15,14 +16,18 @@ import 'package:prescription_ocr/journeys/auth/login_page.dart';
 import 'package:prescription_ocr/repositories/authentication/auth_repository.dart';
 import 'package:prescription_ocr/repositories/user/user_repository.dart';
 
+
+  late List<CameraDescription> cameras;
+  
 Future<void> main() async {
   ScreenUtil.init();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await GetStorage.init();
+  cameras = await availableCameras();
 
-  AwesomeNotifications().initialize(
-    'resource://drawable/res_notification_app_icon',
+  await AwesomeNotifications().initialize(
+    null,
     [
       NotificationChannel(
         channelKey: 'basic_channel',

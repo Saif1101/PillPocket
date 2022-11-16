@@ -11,11 +11,13 @@ class ReminderModel with _$ReminderModel {
   @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
   const factory ReminderModel({
     String? prescriptionID,
-    int? mealCombination,
-    int? dosage,
-    String? reminderTitle,
     String? reminderId,
-    List<String>? reminderDays,
+    int? notificationId,
+    Map<String, bool>? mealCombination,
+    String? cause,
+    String? reminderTitle,
+    
+    Map<String, bool>? selectedDays,
     @TimestampConverter() List<DateTime>? reminderTimes,
     List<String>? medicines,
     String? note,
@@ -34,5 +36,11 @@ class ReminderModel with _$ReminderModel {
     } else {
       return ReminderModel();
     }
+  }
+
+  @override
+  String toString() {
+    // TODO: implement toString
+    return 'PrescriptionID: $prescriptionID \nCause: ${cause} \nMealCombn: $mealCombination \nReminderID $reminderId \nReminderTitle $reminderTitle \nReminderTimes $reminderTimes \nSelectedDays $selectedDays \nMedicines $medicines \nNote $note';
   }
 }

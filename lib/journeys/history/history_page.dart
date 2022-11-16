@@ -8,6 +8,7 @@ import 'package:prescription_ocr/journeys/history/RemindersList.dart';
 import 'package:prescription_ocr/journeys/home/recent_prescriptions_column.dart';
 
 import 'package:prescription_ocr/journeys/inspect_reminder_page/inspect_reminder_page.dart';
+import 'package:prescription_ocr/journeys/inspect_reminder_page/widgets/GRWBColorSwitchButton.dart';
 
 class HistoryPage extends StatefulWidget {
   const HistoryPage({Key? key}) : super(key: key);
@@ -96,35 +97,5 @@ class _HistoryPageState extends State<HistoryPage> {
     ));
   }
 
-  ListView showRemindersList() {
-    return ListView.separated(
-      padding: EdgeInsets.only(top: 10),
-      shrinkWrap: true,
-      itemCount: 5,
-      itemBuilder: (BuildContext context, int index) {
-        return ReminderCardCondensed();
-      },
-      separatorBuilder: (BuildContext context, int index) {
-        return SizedBox(
-          height: 20,
-        );
-      },
-    );
-  }
-
-  ListView showPrescriptionsList() {
-    return ListView.separated(
-      padding: EdgeInsets.only(top: 10),
-      shrinkWrap: true,
-      itemCount: 5,
-      itemBuilder: (BuildContext context, int index) {
-        return SizedBox();
-      },
-      separatorBuilder: (BuildContext context, int index) {
-        return SizedBox(
-          height: 20,
-        );
-      },
-    );
-  }
+  
 }

@@ -12,12 +12,14 @@ class RecentPrescriptionsBloc extends Bloc<RecentPrescriptionsEvent, RecentPresc
   final PrescriptionRepository prescriptionRepository;
   final UserRepository userRepository;
 
-  RecentPrescriptionsBloc({required this.prescriptionRepository,required this.userRepository}) : super(_Initial()) {
+  RecentPrescriptionsBloc(
+    {required this.prescriptionRepository,required this.userRepository})
+     : super(_Initial()) {
     on<RecentPrescriptionsEvent>(_onRecentPrescriptions);
   }
 
-  Future<void> _onRecentPrescriptions(RecentPrescriptionsEvent event, 
-  Emitter<RecentPrescriptionsState> emit){
+  Future<void> _onRecentPrescriptions(
+    RecentPrescriptionsEvent event, Emitter<RecentPrescriptionsState> emit){
 
     return event.map(started: (_Started value) async {
       try{

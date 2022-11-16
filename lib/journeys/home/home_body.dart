@@ -55,7 +55,7 @@ class HomePageBody extends StatelessWidget {
               Align(
                   alignment: Alignment.centerRight,
                   child: RichTextHeader(
-                    lightText: 'Upcoming ',
+                    lightText: 'Your ',
                     boldText: 'Reminders',
                   )),
               SizedBox(

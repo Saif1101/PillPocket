@@ -1,27 +1,44 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_tags/flutter_tags.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:prescription_ocr/blocs/bloc/inspect_reminder_bloc.dart';
+import 'package:prescription_ocr/blocs/home_page/home_page_bloc.dart';
+import 'package:prescription_ocr/common/extensions/date_extension.dart';
+
 import 'package:prescription_ocr/common/utils/screen_utils.dart';
 import 'package:prescription_ocr/common/theme_colors.dart';
+import 'package:prescription_ocr/data/models/reminder/reminder_model.dart';
 import 'package:prescription_ocr/journeys/common_widgets/BlackTextHeader.dart';
-import 'package:prescription_ocr/journeys/common_widgets/GreyTextDisplayWithHeader.dart';
+
+import 'package:prescription_ocr/journeys/common_widgets/GreyTextInputBoxWithHeader.dart';
 import 'package:prescription_ocr/journeys/inspect_reminder_page/medicines/medicines_widget.dart';
-import 'package:prescription_ocr/journeys/inspect_reminder_page/model/NotificationDayAndTime.dart';
+import 'package:prescription_ocr/journeys/inspect_reminder_page/reminder_created_page.dart';
+
 import 'package:prescription_ocr/journeys/inspect_reminder_page/widgets/DaySelectChip.dart';
 import 'package:prescription_ocr/journeys/inspect_reminder_page/widgets/MealCombinationButton.dart';
-import 'package:prescription_ocr/journeys/profile/profile_page.dart';
+import 'package:prescription_ocr/journeys/widgets/circular_progress_indicator.dart';
+import 'package:prescription_ocr/repositories/notifications/notifications_repository.dart';
+
+import 'package:prescription_ocr/repositories/reminder/reminder_repository.dart';
+import 'package:prescription_ocr/repositories/user/user_repository.dart';
 import 'package:textfield_tags/textfield_tags.dart';
 
 class InspectReminderPage extends StatefulWidget {
-  const InspectReminderPage({Key? key}) : super(key: key);
+  final ReminderModel? reminderModel;
+  const InspectReminderPage({Key? key, this.reminderModel}) : super(key: key);
 
   static const String routeName = '/inspect-reminder';
 
-  static Route route() {
+  static Route route(ReminderModel? reminderModel) {
     return MaterialPageRoute(
-        settings: RouteSettings(name: routeName),
-        builder: (_) => InspectReminderPage());
+        settings: const RouteSettings(name: routeName),
+        builder: (_) => InspectReminderPage(
+              reminderModel: reminderModel,
+            ));
   }
 
   @override
@@ -29,9 +46,16 @@ class InspectReminderPage extends StatefulWidget {
 }
 
 class _InspectReminderPageState extends State<InspectReminderPage> {
+  final ReminderModel _reminderModel = ReminderModel();
+
   List<String> tags = [];
   late TextfieldTagsController _controller;
   late double _distanceToField;
+
+  late TextEditingController _titleController;
+  late TextEditingController _noteController;
+  late TextEditingController _causeController;
+  
 
   Map<String, bool> selectedDays = {
     'Monday': false,
@@ -50,7 +74,7 @@ class _InspectReminderPageState extends State<InspectReminderPage> {
     'After': false,
   };
 
-  List<TimeOfDay> selectedTimes = [];
+  List<DateTime> reminderTimes = [];
 
   void selectDay(bool value, String day) {
     if (day == 'Everyday') {
@@ -76,7 +100,7 @@ class _InspectReminderPageState extends State<InspectReminderPage> {
     print("After assignment: $mealCombination ");
   }
 
-  GlobalKey<TagsState> _tagStateKey = GlobalKey();
+  late GlobalKey<TagsState> _tagStateKey;
 
   @override
   void didChangeDependencies() {
@@ -88,6 +112,10 @@ class _InspectReminderPageState extends State<InspectReminderPage> {
   void initState() {
     super.initState();
     _controller = TextfieldTagsController();
+    _titleController = TextEditingController();
+    _noteController = TextEditingController();
+    _causeController = TextEditingController();
+    _tagStateKey = GlobalKey();
   }
 
   _selectTime(BuildContext context) async {
@@ -96,293 +124,342 @@ class _InspectReminderPageState extends State<InspectReminderPage> {
       initialTime: TimeOfDay.now(),
       initialEntryMode: TimePickerEntryMode.dial,
     );
-    if (timeOfDay != null && !selectedTimes.contains(timeOfDay)) {
+    if (timeOfDay != null && !reminderTimes.contains(timeOfDay)) {
       setState(() {
-        selectedTimes.add(timeOfDay);
+        reminderTimes.add(DateTime.now().toDateTime(timeOfDay));
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          iconTheme: IconThemeData(
-            color: Colors.black, //change your color here
-          ),
-          actions: [
-            GestureDetector(
-              onTap: () {
-                print('Reminder submitted');
-              },
-              child: SizedBox(
-                width: 65,
-                height: 75,
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8),
-                  child: Material(
-                    color: ThemeColors.primaryGreen,
-                    elevation: 5,
-                    child: Container(
-                      alignment: Alignment.center,
-                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-                      child: SvgPicture.asset(
-                        'assets/tick_white.svg',
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider(
+          create: (context) => ReminderRepository(),
         ),
-        body: Padding(
-          padding: const EdgeInsets.fromLTRB(24.0, 0, 0, 0),
-          child: SingleChildScrollView(
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(
-                'Create \nReminder',
-                style: GoogleFonts.roboto(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                  fontSize: 40,
+        RepositoryProvider(
+          create: (context) => UserRepository(),
+        ),
+        RepositoryProvider(
+          create: (context) =>NotificationsRepository(),
+        ),
+      ],
+      child: BlocProvider<InspectReminderBloc>(
+        create: (context) => InspectReminderBloc(
+            reminderRepository:
+                RepositoryProvider.of<ReminderRepository>(context), userRepository: RepositoryProvider.of<UserRepository>(context), notificationsRepository: RepositoryProvider.of<NotificationsRepository>(context))
+          ..add(InspectReminderEvent.started(_reminderModel)),
+        child: BlocConsumer<InspectReminderBloc, InspectReminderState>(
+          listener: (context, state) {
+            
+          },
+          builder: (context, state) {
+            return state.maybeMap(
+              submitted: (value) {
+                return ReminderCreatedConfirmationPage();
+              },
+              initial: (state) {
+              
+              return Scaffold(
+                body: Center(
+                  child: LoadingWidget(),
                 ),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              GreyTextDisplayWithHeader(
-                  header: "Title", displayText: "Lorem Ipsum"),
-              SizedBox(
-                height: 20,
-              ),
-              BlackTextHeader(header: 'Medicine(s)'),
-              MedicineNameTags(
-                  controller: _controller, distanceToField: _distanceToField),
-              SizedBox(
-                height: 5,
-              ),
-              Row(
-                children: [
-                  BlackTextHeader(header: 'Reminder Time(s)'),
-                  IconButton(
-                      onPressed: () {
-                        _selectTime(context);
-                      },
-                      icon: Icon(
-                        Icons.add_box_rounded,
-                        color: ThemeColors.primaryGreen,
-                      ))
-                ],
-              ),
-              selectedTimes.isNotEmpty
-                  ? SizedBox(
-                      height: ScreenUtil.screenHeight / 6,
-                      child: GridView.count(
-                          shrinkWrap: true,
-                          childAspectRatio: 3,
-                          crossAxisCount: 3,
-                          crossAxisSpacing: 2.0,
-                          //mainAxisSpacing: 2.0,
-                          children:
-                              List.generate(selectedTimes.length, (index) {
-                            return Chip(
-                              elevation: 0,
-                              labelPadding: EdgeInsets.symmetric(
-                                  horizontal: 6, vertical: 1),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.zero),
-
-                              backgroundColor: ThemeColors.primaryGrey,
-
-                              label: Text(
-                                selectedTimes[index].format(context),
-                                style: TextStyle(fontSize: 18),
+              );
+            }, loading: (value) {
+              return Scaffold(
+                body: Center(
+                  child: LoadingWidget(),
+                ),
+              );
+            }, loaded: (state) {
+              return Scaffold(
+                  appBar: AppBar(
+                    elevation: 0,
+                    iconTheme: const IconThemeData(
+                      color: Colors.black, //change your color here
+                    ),
+                    actions: [
+                      GestureDetector(
+                        onTap: () {
+                          ReminderModel rem = ReminderModel(
+                            notificationId: Random(DateTime.now().microsecondsSinceEpoch).nextInt(30),
+                            mealCombination: mealCombination,
+                            reminderTimes: reminderTimes,
+                            selectedDays: selectedDays,
+                            cause: _causeController.text,
+                            medicines: tags,
+                            reminderTitle: _titleController.text,
+                            note: _noteController.text,
+                          );
+                          BlocProvider.of<InspectReminderBloc>(context)
+                              .add(InspectReminderEvent.submitted(rem));
+                        },
+                        child: SizedBox(
+                          width: 65,
+                          height: 75,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0, vertical: 8),
+                            child: Material(
+                              color: ThemeColors.primaryGreen,
+                              elevation: 5,
+                              child: Container(
+                                alignment: Alignment.center,
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 6),
+                                child: SvgPicture.asset(
+                                  'assets/tick_white.svg',
+                                  fit: BoxFit.contain,
+                                ),
                               ),
-                              deleteIcon: Icon(Icons.cancel),
-                              onDeleted: () {
-                                setState(() {
-                                  selectedTimes.remove(selectedTimes[index]);
-                                });
-                              }, //Text
-                            );
-                          })),
-                    )
-                  : SizedBox.shrink(),
-              SizedBox(
-                height: 10,
-              ),
-              GreyTextDisplayWithHeader(
-                  header: 'Notes',
-                  displayText:
-                      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in"
-                      " reprehenderit in voluptate velit esse "
-                      "cillum dolore eu fugiat nulla pariatur."),
-              SizedBox(
-                height: 10,
-              ),
-              BlackTextHeader(header: 'Duration'),
-              Align(
-                  alignment: Alignment.center,
-                  child: DaySelectChip(
-                    day: 'Everyday',
-                    isSelected: selectedDays['Everyday']!,
-                    onTap: selectDay,
-                  )),
-              SizedBox(height: 10),
-              Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                      child: Divider(
-                        thickness: 1,
-                        color: Colors.black,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                  Text(
-                    'OR',
-                    style: GoogleFonts.roboto(
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black,
-                      fontSize: 16,
+                  body: Padding(
+                    padding: const EdgeInsets.fromLTRB(24.0, 0, 0, 0),
+                    child: SingleChildScrollView(
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Create \nReminder',
+                              style: GoogleFonts.roboto(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                                fontSize: 40,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            GreyTextInputBoxWithHeader(
+                              controller: _titleController,
+                              header: "Title",
+                              hintText: "Add a title",
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            GreyTextInputBoxWithHeader(
+                              controller: _causeController,
+                              header: "Cause",
+                              hintText: "Add a cause",
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            const BlackTextHeader(header: 'Medicine(s)'),
+                            MedicineNameTags(
+                                controller: _controller,
+                                distanceToField: _distanceToField),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Row(
+                              children: [
+                                const BlackTextHeader(
+                                    header: 'Reminder Time(s)'),
+                                IconButton(
+                                    onPressed: () {
+                                      _selectTime(context);
+                                    },
+                                    icon: const Icon(
+                                      Icons.add_box_rounded,
+                                      color: ThemeColors.primaryGreen,
+                                    ))
+                              ],
+                            ),
+                            reminderTimes.isNotEmpty
+                                ? SizedBox(
+                                    height: ScreenUtil.screenHeight / 6,
+                                    child: GridView.count(
+                                        shrinkWrap: true,
+                                        childAspectRatio: 3,
+                                        crossAxisCount: 3,
+                                        crossAxisSpacing: 2.0,
+                                        //mainAxisSpacing: 2.0,
+                                        children: List.generate(
+                                            reminderTimes.length, (index) {
+                                          return Chip(
+                                            elevation: 0,
+                                            labelPadding:
+                                                const EdgeInsets.symmetric(
+                                                    horizontal: 6, vertical: 1),
+                                            shape: const RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.zero),
+                                            backgroundColor:
+                                                ThemeColors.primaryGrey,
+                                            label: Text(
+                                              reminderTimes[index].getTime(),
+                                              style:
+                                                  const TextStyle(fontSize: 18),
+                                            ),
+                                            deleteIcon:
+                                                const Icon(Icons.cancel),
+                                            onDeleted: () {
+                                              setState(() {
+                                                reminderTimes.remove(
+                                                    reminderTimes[index]);
+                                              });
+                                            }, //Text
+                                          );
+                                        })),
+                                  )
+                                : const SizedBox.shrink(),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            GreyTextInputBoxWithHeader(
+                              hintText: 'Add a note',
+                              header: 'Notes',
+                              controller: _noteController,
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            const BlackTextHeader(header: 'Duration'),
+                            Align(
+                                alignment: Alignment.center,
+                                child: DaySelectChip(
+                                  day: 'Everyday',
+                                  isSelected: selectedDays['Everyday']!,
+                                  onTap: selectDay,
+                                )),
+                            const SizedBox(height: 10),
+                            Row(
+                              children: [
+                                const Expanded(
+                                  child: Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 32.0),
+                                    child: Divider(
+                                      thickness: 1,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  'OR',
+                                  style: GoogleFonts.roboto(
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                const Expanded(
+                                  child: Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 32.0),
+                                    child: Divider(
+                                      thickness: 1,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Wrap(
+                                crossAxisAlignment: WrapCrossAlignment.center,
+                                alignment: WrapAlignment.center,
+                                spacing: 5.0,
+                                children: <Widget>[
+                                  DaySelectChip(
+                                      onTap: selectDay,
+                                      day: 'Monday',
+                                      isSelected: selectedDays['Monday']!),
+                                  DaySelectChip(
+                                      onTap: selectDay,
+                                      day: 'Tuesday',
+                                      isSelected: selectedDays['Tuesday']!),
+                                  DaySelectChip(
+                                      onTap: selectDay,
+                                      day: 'Wednesday',
+                                      isSelected: selectedDays['Wednesday']!),
+                                  DaySelectChip(
+                                      onTap: selectDay,
+                                      day: 'Thursday',
+                                      isSelected: selectedDays['Thursday']!),
+                                  DaySelectChip(
+                                      onTap: selectDay,
+                                      day: 'Friday',
+                                      isSelected: selectedDays['Friday']!),
+                                  DaySelectChip(
+                                      onTap: selectDay,
+                                      day: 'Saturday',
+                                      isSelected: selectedDays['Saturday']!),
+                                  DaySelectChip(
+                                      onTap: selectDay,
+                                      day: 'Sunday',
+                                      isSelected: selectedDays['Sunday']!),
+                                ]),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            const BlackTextHeader(header: 'Pre/With/Post Meal'),
+                            const SizedBox(
+                              height: 25,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                GestureDetector(
+                                    onTap: () {
+                                      setMealCombination(
+                                          mealCombination['Before']!, 'Before');
+                                      setState(() {});
+                                    },
+                                    child: MealCombinationButton(
+                                      isSelected: mealCombination['Before']!,
+                                      label: 'Before',
+                                    )), //
+                                GestureDetector(
+                                    onTap: () {
+                                      setMealCombination(
+                                          mealCombination['With']!, 'With');
+                                      setState(() {});
+                                    },
+                                    child: MealCombinationButton(
+                                      isSelected: mealCombination['With']!,
+                                      label: 'With',
+                                    )), //
+                                GestureDetector(
+                                    onTap: () {
+                                      setMealCombination(
+                                          mealCombination['After']!, 'After');
+                                      setState(() {});
+                                    },
+                                    child: MealCombinationButton(
+                                      isSelected: mealCombination['After']!,
+                                      label: 'After',
+                                    )), //
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 100,
+                            ),
+                          ]),
                     ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                      child: Divider(
-                        thickness: 1,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Wrap(
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  alignment: WrapAlignment.center,
-                  spacing: 5.0,
-                  children: <Widget>[
-                    DaySelectChip(
-                        onTap: selectDay,
-                        day: 'Monday',
-                        isSelected: selectedDays['Monday']!),
-                    DaySelectChip(
-                        onTap: selectDay,
-                        day: 'Tuesday',
-                        isSelected: selectedDays['Tuesday']!),
-                    DaySelectChip(
-                        onTap: selectDay,
-                        day: 'Wednesday',
-                        isSelected: selectedDays['Wednesday']!),
-                    DaySelectChip(
-                        onTap: selectDay,
-                        day: 'Thursday',
-                        isSelected: selectedDays['Thursday']!),
-                    DaySelectChip(
-                        onTap: selectDay,
-                        day: 'Friday',
-                        isSelected: selectedDays['Friday']!),
-                    DaySelectChip(
-                        onTap: selectDay,
-                        day: 'Saturday',
-                        isSelected: selectedDays['Saturday']!),
-                    DaySelectChip(
-                        onTap: selectDay,
-                        day: 'Sunday',
-                        isSelected: selectedDays['Sunday']!),
-                  ]),
-              SizedBox(
-                height: 10,
-              ),
-              BlackTextHeader(header: 'Pre/With/Post Meal'),
-              SizedBox(
-                height: 25,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  GestureDetector(
-                      onTap: () {
-                        setMealCombination(
-                            mealCombination['Before']!, 'Before');
-                        setState(() {});
-                      },
-                      child: MealCombinationButton(
-                        isSelected: mealCombination['Before']!,
-                        label: 'Before',
-                      )), //
-                  GestureDetector(
-                      onTap: () {
-                        setMealCombination(mealCombination['With']!, 'With');
-                        setState(() {});
-                      },
-                      child: MealCombinationButton(
-                        isSelected: mealCombination['With']!,
-                        label: 'With',
-                      )), //
-                  GestureDetector(
-                      onTap: () {
-                        setMealCombination(mealCombination['After']!, 'After');
-                        setState(() {});
-                      },
-                      child: MealCombinationButton(
-                        isSelected: mealCombination['After']!,
-                        label: 'After',
-                      )), //
-                ],
-              ),
-              SizedBox(
-                height: 100,
-              ),
-            ]),
-          ),
-        ));
-  }
-}
-
-class GRBWGColorSwitchButton extends StatelessWidget {
-  final String text;
-  final FontWeight fontWeight;
-  final double fontSize;
-  final bool isSelected;
-
-  const GRBWGColorSwitchButton({
-    required this.isSelected,
-    required this.text,
-    Key? key,
-    required this.fontWeight,
-    required this.fontSize,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 18, vertical: 4.0),
-      decoration: BoxDecoration(
-          color:
-              isSelected ? ThemeColors.primaryGreen : ThemeColors.primaryGrey,
-          borderRadius: BorderRadius.all(Radius.circular(55))),
-      child: Text(
-        text,
-        style: GoogleFonts.roboto(
-          fontWeight: fontWeight,
-          color: isSelected ? Colors.white : Colors.black,
-          fontSize: fontSize,
+                  ));
+            }, orElse: () {
+              print("Inside undef State");
+              return const Center(child: Text('Undefined State'));
+            });
+          },
         ),
       ),
     );
   }
 }
+
+
 
 /*
 SizedBox(

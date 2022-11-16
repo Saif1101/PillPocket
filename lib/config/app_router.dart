@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:prescription_ocr/data/models/prescription/prescription_model.dart';
+import 'package:prescription_ocr/data/models/reminder/reminder_model.dart';
 import 'package:prescription_ocr/journeys/add_prescription/add_prescription_page.dart';
 import 'package:prescription_ocr/journeys/add_prescription/prescription_review_page.dart';
 import 'package:prescription_ocr/journeys/add_prescription/reminders_review_page.dart';
@@ -12,6 +13,7 @@ import 'package:prescription_ocr/journeys/history/history_page.dart';
 import 'package:prescription_ocr/journeys/home/home_page.dart';
 import 'package:prescription_ocr/journeys/inspect_prescription/inspect_prescription_page.dart';
 import 'package:prescription_ocr/journeys/inspect_reminder_page/inspect_reminder_page.dart';
+import 'package:prescription_ocr/journeys/inspect_reminder_page/reminder_created_page.dart';
 import 'package:prescription_ocr/journeys/profile/profile_page.dart';
 
 class AppRouter {
@@ -42,7 +44,9 @@ class AppRouter {
       case InspectPrescriptionPage.routeName: 
         return InspectPrescriptionPage.route(settings.arguments as PrescriptionModel);
       case InspectReminderPage.routeName:
-        return InspectReminderPage.route();
+        return InspectReminderPage.route(settings.arguments as ReminderModel?);
+      case ReminderCreatedConfirmationPage.routeName: 
+        return ReminderCreatedConfirmationPage.route();
       default:
         print(settings.name);
         return _errorRoute();
