@@ -1,4 +1,4 @@
-# prescription_ocr
+# PillPocket
 
 A new Flutter project.
 
