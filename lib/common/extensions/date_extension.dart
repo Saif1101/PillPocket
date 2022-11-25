@@ -21,3 +21,20 @@ extension DateTimeExtension2 on DateTime {
   }
 
 }
+
+extension DateExtension on String{
+  int getDayIndex(){
+    Map<String,int> dayIndexes = {
+       'Monday': 1,
+    'Tuesday': 2,
+    'Wednesday': 3,
+    'Thursday': 4,
+    'Friday': 5,
+    'Saturday': 6,
+    'Sunday': 7,
+    'Everyday': 8,
+    };
+
+    return dayIndexes[this]!;
+  }
+}

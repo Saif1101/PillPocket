@@ -4,6 +4,8 @@ import 'package:prescription_ocr/data/models/reminder/reminder_model.dart';
 class NotificationsRepository{
 
   Future<void> createReminder(ReminderModel reminderModel) async {
+    //TODO for each entry in selected days -> create a reminder for each entry in reminder times
+    //TODO Create a utility function to generate ID for reminder, a particular reminder
     print("Going to create a notification at ${reminderModel.reminderTimes![0].hour} ${reminderModel.reminderTimes![0].minute}");
 
     await AwesomeNotifications().createNotification(

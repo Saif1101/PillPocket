@@ -27,13 +27,13 @@ class RecentPrescriptionsColumn extends StatelessWidget {
         create: (context) => RecentPrescriptionsBloc(
             prescriptionRepository:
                 RepositoryProvider.of<PrescriptionRepository>(context),
-            userRepository: RepositoryProvider.of<UserRepository>(context))..add(RecentPrescriptionsEvent.started()),
+            userRepository: RepositoryProvider.of<UserRepository>(context))..add(const RecentPrescriptionsEvent.started()),
         child: BlocConsumer<RecentPrescriptionsBloc, RecentPrescriptionsState>(
           listener: (context, state) {
             state.mapOrNull(
               initial: (value) {
                 BlocProvider.of<RecentPrescriptionsBloc>(context)
-                    .add(RecentPrescriptionsEvent.started());
+                    .add(const RecentPrescriptionsEvent.started());
               },
             );
           },

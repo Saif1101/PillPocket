@@ -27,7 +27,7 @@ Future<void> main() async {
   cameras = await availableCameras();
 
   await AwesomeNotifications().initialize(
-    null,
+    ,
     [
       NotificationChannel(
         channelKey: 'basic_channel',
